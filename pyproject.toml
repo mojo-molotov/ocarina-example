@@ -1,0 +1,43 @@
+[tool.pip]
+extra-index-url = ["https://test.pypi.org/simple/"]
+
+[project]
+name = "ocarina-dev"
+version = "0.0.0"
+description = "Websites test framework for Selenium and humans"
+requires-python = ">=3.14"
+dependencies = [
+    "python-docx>=1.2.0",
+    "selenium>=4.40.0",
+    "python-dotenv>=1.2.2",
+    "dogpile.cache>=1.5.0",
+    "requests>=2.33.0",
+]
+# TESTING: Also run manually: pip install --index-url https://test.pypi.org/simple/ ocarina==...
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.0",
+    "mypy>=1.17.0",
+    "mypy-extensions>=1.1.0",
+    "typing-extensions>=4.14.0",
+    "pre-commit>=4.5.1",
+    "types-requests>=2.33.0.20260327",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # "B008",  # * ... NEVER ignore this rule without knowing very well what you are doing: https://docs.astral.sh/ruff/rules/function-call-in-default-argument/
+    "ANN002",
+    "ANN003",
+    "ANN201",
+    "TRY003",
+    "C901",
+    "D203",    # * ... Ignore incorrect-blank-line-before-class to avoid conflict with D211
+    "D213",    # * ... Ignore multi-line-summary-second-line to avoid conflict with D212
+    "COM812",  # * ... Ignore COM812 to prevent conflicts with Ruff's formatter (auto-fix)
+]
+
+[tool.ruff]
+exclude = ["**/.venv/**", "**/bin/**", "**/__init__.py", "**/__bypass_linter__"]
