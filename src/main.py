@@ -1,4 +1,4 @@
-"""Lol."""
+"""Napoleon approves."""
 
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -8,7 +8,7 @@ from ocarina.opinionated.cli.selenium.cli_store_singleton import (
     SeleniumCliStoreSingleton as CliStoreSingleton,
 )
 from ocarina.opinionated.cli.selenium.create_cli_store import (
-    create_selenium_linux_cli_store,
+    create_selenium_auto_cli_store,
 )
 from ocarina.opinionated.launcher.bootstrap import bootstrap, run_plugins
 from ocarina.opinionated.loggers.create_matching_logger import (
@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 if __name__ == "__main__":
     with timing(prefix="Tests duration:"):
-        CliStoreSingleton().push(create_selenium_linux_cli_store())
+        CliStoreSingleton().push(create_selenium_auto_cli_store())
 
         drivers_pool = create_selenium_drivers_pool(
             browser=CliStoreSingleton().get("browser"),
