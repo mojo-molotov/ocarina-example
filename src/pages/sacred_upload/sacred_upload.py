@@ -51,6 +51,28 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             By.CSS_SELECTOR,
             '[data-testid="amen-btn"]',
         )
+        self._images_dropzone_error_message = (
+            By.CSS_SELECTOR,
+            '[data-testid="images-dropzone-error-msg"]',
+        )
+        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+
+    def _verify_images_dropzone_error_message(
+        self, error_message_needle: str
+    ) -> SacredUploadPage:
+        """Verify dropzone error message contains the needle."""
+        timeout = get_timeout()
+        images_dropzone_error_message = WebDriverWait(self._driver, timeout).until(
+            ec.presence_of_element_located(self._images_dropzone_error_message)
+        )
+        t = images_dropzone_error_message.text
+        assert error_message_needle in t, (
+            f"error_message_needle not found, got: {t}."
+            " "
+            f"Expected needle: {error_message_needle}"
+        )
+
+        return self
 
     def open(self) -> SacredUploadPage:
         """Open the page."""
@@ -82,7 +104,13 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
 
         return self
 
-    def add_images(self, *, images_amount: int) -> SacredUploadPage:
+    def add_images(
+        self,
+        *,
+        images_amount: int,
+        failing: bool = False,
+        forced_expected_img_amount: int = -1,
+    ) -> SacredUploadPage:
         """Add images to the sacred upload form."""
         validate(images_amount, name="images_amount").assert_that(
             is_positive
@@ -110,12 +138,20 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
 
         previews_img_selector = f"{self._previews_container_selector} img"
 
-        WebDriverWait(self._driver, timeout).until(
-            lambda driver: (
-                len(driver.find_elements(By.CSS_SELECTOR, previews_img_selector))
-                == images_amount
+        if failing:
+            self._verify_images_dropzone_error_message(error_message_needle="Maximum")
+        else:
+            expected_len = (
+                forced_expected_img_amount
+                if forced_expected_img_amount >= 0
+                else images_amount
             )
-        )
+            WebDriverWait(self._driver, timeout).until(
+                lambda driver: (
+                    len(driver.find_elements(By.CSS_SELECTOR, previews_img_selector))
+                    == expected_len
+                )
+            )
 
         return self
 
@@ -148,4 +184,17 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
                 len(driver.find_elements(By.CSS_SELECTOR, previews_img_selector)) == 0
             )
         )
+        return self
+
+    def click_back_to_igoristan_link(self) -> SacredUploadPage:
+        """Click on the back to Igoristan link."""
+        timeout = get_timeout()
+        WebDriverWait(self._driver, timeout).until(
+            ec.visibility_of_element_located(self._igoristan_link)
+        ).click()
+
+        WebDriverWait(self._driver, timeout).until(
+            ec.invisibility_of_element_located(self._igoristan_link)
+        )
+
         return self

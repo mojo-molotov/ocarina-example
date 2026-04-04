@@ -21,11 +21,17 @@ def verify_sacred_upload_page(p: SacredUploadPage) -> SacredUploadPage:
 def add_images(
     *,
     images_amount: int,
+    failing: bool = False,
+    forced_expected_img_amount: int = -1,
 ) -> Callable[[SacredUploadPage], SacredUploadPage]:
     """Append images to the sacred upload page's form."""
 
     def unwrapped(p: SacredUploadPage) -> SacredUploadPage:
-        return p.add_images(images_amount=images_amount)
+        return p.add_images(
+            images_amount=images_amount,
+            failing=failing,
+            forced_expected_img_amount=forced_expected_img_amount,
+        )
 
     return unwrapped
 
@@ -43,3 +49,8 @@ def click_on_amen_btn(p: SacredUploadPage) -> SacredUploadPage:
 def verify_dropzone_is_empty(p: SacredUploadPage) -> SacredUploadPage:
     """Verify dropzone is empty."""
     return p.verify_dropzone_is_empty()
+
+
+def click_back_to_igoristan_link(p: SacredUploadPage) -> SacredUploadPage:
+    """Click on the back to Igoristan link."""
+    return p.click_back_to_igoristan_link()

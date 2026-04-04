@@ -6,11 +6,8 @@ from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
 from lib.connectors.test_steps.actions.sacred_upload import (
-    add_images,
-    click_on_amen_btn,
-    click_on_upload_btn,
+    click_back_to_igoristan_link,
     open_sacred_upload_page,
-    verify_dropzone_is_empty,
     verify_sacred_upload_page,
 )
 from lib.ext.ocarina.adapters.selenium.act import act
@@ -18,10 +15,10 @@ from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,
     create_log_error_with_current_url,
-    create_log_success_and_take_screenshot,
     create_log_success_with_current_url_and_take_screenshot,
 )
 from pages.sacred_upload.sacred_upload import SacredUploadPage
+from tests.scenarios.homepage.verify_homepage import verify_homepage
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -31,7 +28,7 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def upload_some_files(
+def just_go_back_to_igoristan(
     driver: WebDriver, logger: ILogger
 ) -> Sequence[ChainRunner[SacredUploadPage]]:
     """Verify that random loaders page reaches its first render."""
@@ -42,9 +39,6 @@ def upload_some_files(
         logger=logger, driver=driver
     )
     just_log_success = create_just_log_success(logger=logger)
-    log_success_and_take_screenshot = create_log_success_and_take_screenshot(
-        logger=logger, driver=driver
-    )
     log_success_with_current_url_and_take_screenshot = (
         create_log_success_with_current_url_and_take_screenshot(
             logger=logger, driver=driver
@@ -67,31 +61,19 @@ def upload_some_files(
                     "Verified the sacred upload page!"
                 )
             ),
-            act(on_sacred_upload_page, add_images(images_amount=3))
+            act(on_sacred_upload_page, click_back_to_igoristan_link)
             .failure(
-                just_log_error("Failed to add images to the sacred upload form...")
-            )
-            .success(
-                log_success_and_take_screenshot(
-                    "Added images to the sacred upload form!"
+                just_log_error(
+                    "Failed to click on the 'Back to Igoristan' link...",
                 )
-            ),
-            act(on_sacred_upload_page, click_on_upload_btn)
-            .failure(just_log_error("Failed to click on upload button..."))
-            .success(log_success_and_take_screenshot("Clicked on the upload button!")),
-            act(on_sacred_upload_page, click_on_amen_btn)
-            .failure(just_log_error("Failed to click on the upload confirm button..."))
-            .success(
-                log_success_and_take_screenshot("Clicked on the upload confirm button!")
-            ),
-            act(on_sacred_upload_page, verify_dropzone_is_empty)
-            .failure(just_log_error("The dropzone is not empty..."))
-            .success(log_success_and_take_screenshot("The dropzone is empty!")),
+            )
+            .success(just_log_success("Clicked the 'Back to Igoristan' link!")),
         ),
     ]
 
 
-test_sacred_upload_form_with_some_file_uploads = create_selenium_test(
-    name="Test sacred upload form (uploading some files)",
-    test_scenario=upload_some_files,
+test_sacred_upload_just_go_back_to_igoristan = create_selenium_test(
+    name="Test sacred upload go back to Igoristan button",
+    test_scenario=just_go_back_to_igoristan,
+    post_test_scenarios=[verify_homepage],
 )
