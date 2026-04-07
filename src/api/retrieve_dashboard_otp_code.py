@@ -11,7 +11,8 @@ from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
 
 def retrieve_dashboard_otp_code(*, min_utc_date: datetime, timeout: int) -> str | None:
     """Retrieve dashboard OTP code."""
-    igor_api_key = create_env_getters().get_value("igor_api_key")
+    env = create_env_getters()
+    igor_api_key = env.get_value("igor_api_key")
     response = requests.get(
         OTP_HISTORY_ENDPOINT_URL,
         headers={"x-api-key": igor_api_key},
@@ -20,6 +21,10 @@ def retrieve_dashboard_otp_code(*, min_utc_date: datetime, timeout: int) -> str 
     entries = response.json()
 
     def _entry_matches(entry: dict[str, Any]) -> bool:
+        is_testing_entry = entry["_user"] == env.get_credentials("dashboard")["login"]
+        if not is_testing_entry:
+            return False
+
         created_at = datetime.fromisoformat(
             entry["createdAtTimestampLackingMsPrecision"]
         )
