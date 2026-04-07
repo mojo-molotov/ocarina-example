@@ -64,6 +64,6 @@ def random_error_render(
 
 
 test_random_error_page_render = create_selenium_test(
-    name="Test random error page render",
+    name="Random error page render",
     test_scenario=random_error_render,
 )

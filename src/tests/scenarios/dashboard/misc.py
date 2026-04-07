@@ -72,7 +72,7 @@ def just_go_back_to_igoristan(
 
 
 test_dashboard_login_page_back_to_igoristan_button = create_selenium_test(
-    name="Use the 'Back to Igoristan' button",
+    name="Use the go back to Igoristan button",
     test_scenario=just_go_back_to_igoristan,
     post_test_scenarios=[verify_homepage],
 )

@@ -73,7 +73,7 @@ def just_go_back_to_igoristan(
 
 
 test_sacred_upload_just_go_back_to_igoristan = create_selenium_test(
-    name="Test sacred upload go back to Igoristan button",
+    name="Use the go back to Igoristan button",
     test_scenario=just_go_back_to_igoristan,
     post_test_scenarios=[verify_homepage],
 )

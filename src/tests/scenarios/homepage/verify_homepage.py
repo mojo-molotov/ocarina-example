@@ -77,7 +77,7 @@ def verify_homepage(
 
 
 test_homepage = create_selenium_test(
-    name="Test homepage",
+    name="Validate homepage",
     test_scenario=verify_homepage,
     pre_test_scenarios=[_open_homepage],
 )

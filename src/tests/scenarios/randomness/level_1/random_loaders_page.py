@@ -121,7 +121,7 @@ def click_go_back_btn(
 
 
 test_random_loaders_page_full_load_and_back_to_homepage = create_selenium_test(
-    name="Test Random Loaders page full load + click on the go back to Igoristan btn",
+    name="Random Loaders page full load + use the go back to Igoristan button",
     test_scenario=click_go_back_btn,
     pre_test_scenarios=[
         _random_loaders_first_render,
