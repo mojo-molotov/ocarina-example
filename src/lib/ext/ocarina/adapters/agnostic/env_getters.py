@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from ocarina.custom_types.effect import Effects
 
 type _CredsKeys = Literal["dashboard"]
-type _ValuesKeys = Literal["igor_api_key"]
+type _ValuesKeys = Literal["igor_api_key", "redis_url"]
 
 
 def _load_env() -> None:
@@ -36,7 +36,10 @@ class _EnvGetters(EnvGetters[_CredsKeys, _ValuesKeys]):
                     }
                 ),
             },
-            values={"igor_api_key": os.environ["IGOR_API_KEY"]},
+            values={
+                "igor_api_key": os.environ["IGOR_API_KEY"],
+                "redis_url": os.environ["REDIS_URL"],
+            },
         )
 
 

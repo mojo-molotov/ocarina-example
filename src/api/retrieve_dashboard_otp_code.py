@@ -5,7 +5,7 @@ from typing import Any
 
 import requests
 
-from api.consts.endpoints import OTP_HISTORY_ENDPOINT_URL
+from api.constants.endpoints import OTP_HISTORY_ENDPOINT_URL
 from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
 
 

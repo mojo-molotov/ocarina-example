@@ -5,7 +5,7 @@ import random
 import time
 from contextlib import suppress
 from datetime import UTC, datetime
-from threading import Lock
+from threading import Lock as ProcessLock
 from typing import TYPE_CHECKING, Any, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
@@ -30,10 +30,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from api.retrieve_dashboard_otp_code import retrieve_dashboard_otp_code
 from constants.pages.dashboard import DASHBOARD_URL
+from constants.sys.redis_keys import OTP_SEND_LOCK_KEY
 from lib.custom_errors.transient_error import TransientError
 from lib.ext.ocarina.adapters.agnostic.cli_getters import get_max_workers, get_timeout
 from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
 from lib.ext.ocarina.adapters.selenium.screenshotter import take_screenshot
+from lib.ext.redis.client import get_redis_client
 from lib.ext.selenium.pages.verify_elements_presence import verify_elements_presence
 
 if TYPE_CHECKING:
@@ -43,14 +45,19 @@ if TYPE_CHECKING:
         ImmutableCredentials,
     )
     from ocarina.ports.ilogger import ILogger
+    from redis.lock import Lock as RedisLock
     from selenium.webdriver.remote.webdriver import WebDriver
 
-
-_send_lock = Lock()
-# TODO: dockerize-me and use a distributed Redis lock here.  # noqa: E501, FIX002, TD002, TD003
-
-
+_send_lock = ProcessLock()
 _PAGE_TITLE = "the Igoristan dashboard login page"
+
+
+def _get_lock() -> ProcessLock | RedisLock:
+    client = get_redis_client()
+    if client is None:
+        return _send_lock
+    redis_lock: RedisLock = client.lock(OTP_SEND_LOCK_KEY, timeout=30)
+    return redis_lock
 
 
 @final
@@ -356,7 +363,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
         workers = get_max_workers()
 
         if workers > 1:
-            with _send_lock:
+            with _get_lock():
                 time.sleep(math.ceil(max(workers / 2, 2.5)))
                 _send(username)
         else:

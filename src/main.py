@@ -28,6 +28,7 @@ from ocarina.opinionated.plugins.reports.pretty_print_results import (
 from ocarina.opinionated.plugins.reports.results_to_json import generate_json_results
 from ocarina.opinionated.plugins.reports.timing import timing
 
+from lib.ext.redis.client import warmup_redis_client
 from tests.cycles.e2e import create_e2e_test_cycle
 
 if TYPE_CHECKING:
@@ -46,6 +47,7 @@ if __name__ == "__main__":
         )
 
         logger = create_matching_logger(CliStoreSingleton().get("logger"))
+        warmup_redis_client()
 
         def _post_exec(results: TestCycleResults) -> None:
             print()  # noqa: T201
