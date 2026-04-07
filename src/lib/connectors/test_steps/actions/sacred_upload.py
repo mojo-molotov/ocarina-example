@@ -36,6 +36,20 @@ def add_images(
     return unwrapped
 
 
+def click_on_delete_img_btn(
+    *,
+    idx: int,
+) -> Callable[[SacredUploadPage], SacredUploadPage]:
+    """Append images to the sacred upload page's form."""
+
+    def unwrapped(p: SacredUploadPage) -> SacredUploadPage:
+        return p.click_on_delete_img_btn(
+            idx=idx,
+        )
+
+    return unwrapped
+
+
 def click_on_upload_btn(p: SacredUploadPage) -> SacredUploadPage:
     """Click on upload button."""
     return p.click_on_upload_btn()
@@ -44,6 +58,11 @@ def click_on_upload_btn(p: SacredUploadPage) -> SacredUploadPage:
 def click_on_amen_btn(p: SacredUploadPage) -> SacredUploadPage:
     """Click on amen button."""
     return p.click_on_amen_btn()
+
+
+def click_on_sin_btn(p: SacredUploadPage) -> SacredUploadPage:
+    """Click on sin button."""
+    return p.click_on_sin_btn()
 
 
 def verify_dropzone_is_empty(p: SacredUploadPage) -> SacredUploadPage:

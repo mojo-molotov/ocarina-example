@@ -1,4 +1,4 @@
-"""Igoristan's random error page."""
+"""Igoristan's sacred upload page."""
 
 import random
 from pathlib import Path
@@ -19,7 +19,19 @@ from constants.pages.sacred_upload import SACRED_UPLOAD_PAGE_URL
 from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from selenium.webdriver.common.by import ByType
     from selenium.webdriver.remote.webdriver import WebDriver
+
+
+def _wait_for_previews(expected_len: int, selector: str) -> Callable[[WebDriver], bool]:
+    def unwrapped(driver: WebDriver) -> bool:
+        elements = driver.find_elements(By.CSS_SELECTOR, selector)
+        current_len = len(elements)
+        return current_len == expected_len
+
+    return unwrapped
 
 
 @final
@@ -51,11 +63,24 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             By.CSS_SELECTOR,
             '[data-testid="amen-btn"]',
         )
+        self._sin_btn = (
+            By.CSS_SELECTOR,
+            '[data-testid="forgive-me-btn"]',
+        )
+
         self._images_dropzone_error_message = (
             By.CSS_SELECTOR,
             '[data-testid="images-dropzone-error-msg"]',
         )
         self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+
+    @staticmethod
+    def _delete_img_btn(idx: int) -> tuple[ByType, str]:
+        """Delete image btn selector."""
+        return (
+            By.CSS_SELECTOR,
+            f'[data-testid="delete-image-{idx}-btn"]',
+        )
 
     def _verify_images_dropzone_error_message(
         self, error_message_needle: str
@@ -129,6 +154,8 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             ec.presence_of_element_located(self._images_input)
         )
 
+        self._driver.execute_script("arguments[0].value = '';", file_input)
+
         selected = "\n".join(
             str(random.choice(img_paths))  # noqa: S311
             for _ in range(images_amount)
@@ -147,10 +174,12 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
                 else images_amount
             )
             WebDriverWait(self._driver, timeout).until(
-                lambda driver: (
-                    len(driver.find_elements(By.CSS_SELECTOR, previews_img_selector))
-                    == expected_len
-                )
+                _wait_for_previews(expected_len, previews_img_selector),
+                message=(
+                    f"Expected {expected_len}"
+                    " "
+                    f"preview images (selector: '{previews_img_selector}')"
+                ),
             )
 
         return self
@@ -164,6 +193,15 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
         upload_btn.click()
         return self
 
+    def click_on_delete_img_btn(self, idx: int) -> SacredUploadPage:
+        """Click on upload button."""
+        timeout = get_timeout()
+        delete_img_btn = WebDriverWait(self._driver, timeout).until(
+            ec.presence_of_element_located(self._delete_img_btn(idx))
+        )
+        delete_img_btn.click()
+        return self
+
     def click_on_amen_btn(self) -> SacredUploadPage:
         """Click on amen button."""
         timeout = get_timeout()
@@ -173,16 +211,25 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
         amen_btn.click()
         return self
 
+    def click_on_sin_btn(self) -> SacredUploadPage:
+        """Click on sin button."""
+        timeout = get_timeout()
+        sin_btn = WebDriverWait(self._driver, timeout).until(
+            ec.presence_of_element_located(self._sin_btn)
+        )
+        sin_btn.click()
+        return self
+
     def verify_dropzone_is_empty(self) -> SacredUploadPage:
         """Verify dropzone is empty."""
         previews_img_selector = f"{self._previews_container_selector} img"
 
         timeout = 20  # Hard-coded since loaders are slow here.
+        expected_len = 0
 
         WebDriverWait(self._driver, timeout).until(
-            lambda driver: (
-                len(driver.find_elements(By.CSS_SELECTOR, previews_img_selector)) == 0
-            )
+            _wait_for_previews(expected_len, previews_img_selector),
+            message=f"Expected {expected_len} preview image.",
         )
         return self
 
