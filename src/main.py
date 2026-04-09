@@ -47,7 +47,10 @@ if __name__ == "__main__":
         )
 
         logger = create_matching_logger(CliStoreSingleton().get("logger"))
+
+        logger.info("Warming up the Redis client...")
         warmup_redis_client()
+        logger.success("Redis client initialized!")
 
         def _post_exec(results: TestCycleResults) -> None:
             print()  # noqa: T201
@@ -60,11 +63,11 @@ if __name__ == "__main__":
                 lambda: generate_docx_proof(
                     logs_root=get_default_log_dir(),
                     logger=logger,
-                    output_root=Path.cwd() / ".dont_push" / "tests_docx_output",
+                    output_root=Path.cwd() / ".reports" / "tests_docx_output",
                 ),
                 lambda: generate_json_results(
                     results=results,
-                    output_dir=Path.cwd() / ".dont_push" / "tests_json_output",
+                    output_dir=Path.cwd() / ".reports" / "tests_json_output",
                     logger=logger,
                 ),
                 exceptions_logger=PrintLogger()

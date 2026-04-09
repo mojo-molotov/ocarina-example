@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
-from caches.in_memory import in_memory_cache_with_300s_ttl
+from caches.l1 import in_memory_cache_with_300s_ttl
 from caches.reserve_free_cache_key import reserve_free_cache_key
 from lib.connectors.test_steps.actions.dashboard_login import (
     login_without_otp_and_with_retries,

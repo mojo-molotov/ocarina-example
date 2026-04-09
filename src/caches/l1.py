@@ -1,4 +1,4 @@
-"""In-memory cache."""
+"""L1 caches."""
 
 from dogpile.cache import make_region
 

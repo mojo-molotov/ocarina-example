@@ -16,7 +16,7 @@ allure-report/
 .ocarina_logs*/
 
 .venv/
-*.dont_push/
+*.reports/
 .screenshots/
 .webdriver_*
 

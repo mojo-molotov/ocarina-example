@@ -5,7 +5,6 @@ import random
 import time
 from contextlib import suppress
 from datetime import UTC, datetime
-from threading import Lock as ProcessLock
 from typing import TYPE_CHECKING, Any, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
@@ -48,14 +47,11 @@ if TYPE_CHECKING:
     from redis.lock import Lock as RedisLock
     from selenium.webdriver.remote.webdriver import WebDriver
 
-_send_lock = ProcessLock()
 _PAGE_TITLE = "the Igoristan dashboard login page"
 
 
-def _get_lock() -> ProcessLock | RedisLock:
+def _get_lock() -> RedisLock:
     client = get_redis_client()
-    if client is None:
-        return _send_lock
     redis_lock: RedisLock = client.lock(OTP_SEND_LOCK_KEY, timeout=30)
     return redis_lock
 
