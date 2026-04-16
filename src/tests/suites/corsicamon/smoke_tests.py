@@ -18,7 +18,7 @@ def create_igoristan_corsicamon_smoke_tests_suite(
 ) -> TestSuite:
     """Create the Corsicamon smoke tests suite."""
     return TestSuite(
-        name="Smoke tests",
+        name="API access",
         tests=[
             test_enter_api_key,
             test_fail_to_enter_api_key,
