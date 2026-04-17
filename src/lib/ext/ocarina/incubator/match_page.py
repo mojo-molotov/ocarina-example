@@ -8,10 +8,10 @@ Semantics:
     - Evaluates each when() condition in order (first match wins)
     - Executes the matching branch's ChainRunners sequentially
     - If no condition matches: Fail (on failure rail, short-circuits downstream)
-    - If a branch's ChainRunner fails: Fail (same short-circuit behaviour)
+    - If a branch's ChainRunner fails: Fail (same short-circuit behavior)
     - Returns a ChainRunner[Any] — integrates naturally in a scenario's list
 
-Railway behaviour:
+Railway behavior:
     match_page is a ChainRunner like drive_page.
     It composes in a scenario list and participates in the same
     short-circuit logic: if a previous ChainRunner has failed,
@@ -66,10 +66,13 @@ from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
 from ocarina.dsl.testing_with_railway.internals.action_chain import ActionChain
 from ocarina.railway.result import Fail, Ok
 
+from constants.sys.transient_errors import match_page_transient_errors
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from ocarina.custom_types.thunk import Thunk
+    from ocarina.ports.ilogger import ILogger
 
 
 class NoMatchingBranchError(Exception):
@@ -149,47 +152,94 @@ def _run_branch(runners: Sequence[ChainRunner[Any]]) -> ActionChain[Any]:
     return last
 
 
-def match_page(*branches: _When) -> ChainRunner[Any]:
-    """Conditional branching operator for adaptive pages.
-
-    Evaluates each when() condition in declaration order.
-    The first branch whose condition returns True is executed.
-    If no branch matches, the ChainRunner fails with NoMatchingBranchError.
+def create_match_page(
+    *,
+    raised_exceptions: tuple[type[BaseException], ...] = (),
+):
+    """Create a match_page function with exception policy.
 
     Args:
-        *branches: When instances declared with when(). Evaluated in order.
+        raised_exceptions:
+            Tuple of exception classes that MUST be re-raised during
+            condition evaluation. All other exceptions are treated as
+            a failed condition (i.e. equivalent to False).
 
     Returns:
-        ChainRunner[Any] — composes naturally in a scenario's ChainRunner list.
-
-    Raises (via Fail on the railway):
-        NoMatchingBranchError: If no when() condition returned True.
-
-    Example:
-        >>> match_page(
-        ...     when(lambda: page.is_in_state_a(), then=[drive_page(...)]),
-        ...     when(lambda: page.is_in_state_b(), then=[drive_page(...)]),
-        ... )
+        A match_page(*branches) function.
 
     """
 
-    def thunk() -> ActionChain[Any]:
-        for branch in branches:
-            try:
-                matched = branch.condition()
-            except Exception:  # noqa: BLE001
-                matched = False
+    def match_page(logger: ILogger, branches: Sequence[_When]) -> ChainRunner[Any]:
+        """Conditional branching operator for adaptive pages.
 
-            if matched:
-                return _run_branch(branch.runners)
+        Evaluates each when() condition in declaration order.
+        The first branch whose condition returns True is executed.
+        If no branch matches, the ChainRunner fails with NoMatchingBranchError.
 
-        return ActionChain(
-            has_failed=True,
-            result=Fail(
-                error=NoMatchingBranchError(
-                    f"No when() branch matched out of {len(branches)} candidate(s)."
-                )
-            ),
-        )
+        Exception handling policy:
+            - Exceptions listed in `raise_exceptions` are re-raised immediately.
+            - All other exceptions raised by branch.condition() are
+              interpreted as a non-matching condition (False).
 
-    return ChainRunner(thunk=thunk)
+        Args:
+            logger: logger.
+            branches: When instances declared with when(). Evaluated in order.
+
+        Returns:
+            ChainRunner[Any] — composes naturally in a scenario's ChainRunner list.
+
+        Raises (via Fail on the railway):
+            NoMatchingBranchError:
+                If no when() condition returned True.
+
+            Any exception explicitly listed in `raise_exceptions`:
+                Re-raised during condition evaluation.
+
+        Example:
+            >>> match_page = create_match_page(
+            ...     raise_exceptions=(ValueError, RuntimeError)
+            ... )
+            >>>
+            >>> runner = match_page(
+            ...     when(lambda: page.is_in_state_a(), then=[drive_page(...)]),
+            ...     when(lambda: page.is_in_state_b(), then=[drive_page(...)]),
+            ... )
+
+        """
+
+        def thunk() -> ActionChain[Any]:
+            for branch in branches:
+                try:
+                    matched = branch.condition()
+
+                except raised_exceptions as exc:
+                    logger.exception("Raising exception:", exc=exc)  # type: ignore[arg-type]
+                    raise
+
+                except Exception as exc:
+                    logger.exception("Branch mismatch:", exc=exc)
+                    matched = False
+
+                if matched:
+                    return _run_branch(branch.runners)
+
+            return ActionChain(
+                has_failed=True,
+                result=Fail(
+                    error=NoMatchingBranchError(
+                        f"No when() branch matched out of {len(branches)} candidate(s)."
+                    )
+                ),
+            )
+
+        return ChainRunner(thunk=thunk)
+
+    return match_page
+
+
+# * ... Future user-land
+def match_page(logger: ILogger, *branches: _When):
+    """Match page operator."""
+    return create_match_page(raised_exceptions=match_page_transient_errors)(
+        logger=logger, branches=branches
+    )
