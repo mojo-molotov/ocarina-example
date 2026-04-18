@@ -26,16 +26,11 @@ from tests.scenarios.corsicamon.enter_api_key import enter_api_key
 from tests.scenarios.homepage.verify_homepage import verify_homepage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def go_back_to_igoristan_on_main_screen(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonPage]]:
+def go_back_to_igoristan_on_main_screen(driver: WebDriver, logger: ILogger):
     """Go back to Igoristan from main page."""
     on_corsicamon_page = CorsicamonPage(driver=driver)
 
@@ -64,9 +59,7 @@ def go_back_to_igoristan_on_main_screen(
     ]
 
 
-def go_back_to_igoristan_on_enter_api_key_screen(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonEnterApiKeyPage]]:
+def go_back_to_igoristan_on_enter_api_key_screen(driver: WebDriver, logger: ILogger):
     """Immediately go back to Igoristan."""
     on_corsicamon_enter_api_key_page = CorsicamonEnterApiKeyPage(driver=driver)
 

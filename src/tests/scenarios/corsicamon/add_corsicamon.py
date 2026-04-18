@@ -22,16 +22,11 @@ from pages.corsicamon.main import CorsicamonPage
 from tests.scenarios.corsicamon.enter_api_key import enter_api_key
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def try_to_add_corsicamon_using_invalid_id(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonPage]]:
+def try_to_add_corsicamon_using_invalid_id(driver: WebDriver, logger: ILogger):
     """Fail to add Corsicamon (invalid ID)."""
     on_corsicamon_page = CorsicamonPage(driver=driver)
 
@@ -63,9 +58,7 @@ def try_to_add_corsicamon_using_invalid_id(
     ]
 
 
-def try_to_add_corsicamon_using_already_in_draw_id(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonPage]]:
+def try_to_add_corsicamon_using_already_in_draw_id(driver: WebDriver, logger: ILogger):
     """Fail to add Corsicamon (already in draw ID)."""
     on_corsicamon_page = CorsicamonPage(driver=driver)
 
@@ -100,9 +93,7 @@ def try_to_add_corsicamon_using_already_in_draw_id(
     ]
 
 
-def add_corsicamon(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonPage]]:
+def add_corsicamon(driver: WebDriver, logger: ILogger):
     """Add Corsicamon."""
     on_corsicamon_page = CorsicamonPage(driver=driver)
 

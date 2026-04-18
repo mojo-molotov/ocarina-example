@@ -23,16 +23,13 @@ from pages.random_loaders import RandomLoadersPage
 from tests.scenarios.homepage.verify_homepage import verify_homepage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def _random_loaders_first_render(
+def _random_loaders_first_render(  # noqa: ANN202
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[RandomLoadersPage]]:
+):
     """Verify that random loaders page reaches its first render."""
     on_random_loaders_page = RandomLoadersPage(driver=driver)
 
@@ -67,9 +64,9 @@ def _random_loaders_first_render(
     ]
 
 
-def _random_loaders_full_load_happy_path(
+def _random_loaders_full_load_happy_path(  # noqa: ANN202
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[RandomLoadersPage]]:
+):
     """Verify that random loaders page reaches its final state (fully loaded)."""
     on_random_loaders_page = RandomLoadersPage(driver=driver)
 
@@ -99,9 +96,7 @@ def _random_loaders_full_load_happy_path(
     ]
 
 
-def click_go_back_btn(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[RandomLoadersPage]]:
+def click_go_back_btn(driver: WebDriver, logger: ILogger):
     """Click the go back button on the random loaders page."""
     on_random_loaders_page = RandomLoadersPage(driver=driver)
 

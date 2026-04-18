@@ -22,16 +22,11 @@ from tests.scenarios.corsicamon.add_corsicamon import (
 from tests.scenarios.corsicamon.enter_api_key import enter_api_key
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def make_a_new_draw(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonPage]]:
+def make_a_new_draw(driver: WebDriver, logger: ILogger):
     """Make a new draw."""
     on_corsicamon_page = CorsicamonPage(driver=driver)
 

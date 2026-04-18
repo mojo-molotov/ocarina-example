@@ -37,17 +37,12 @@ from tests.scenarios.dashboard.access.happy_paths import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.opinionated.infra.env import ImmutableCredentialsKeys
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def dashboard_login_empty_creds(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage]]:
+def dashboard_login_empty_creds(driver: WebDriver, logger: ILogger):
     """Verify the page doesn't change when pushing empty login form."""
     dashboard_creds: MappingProxyType[ImmutableCredentialsKeys, str] = MappingProxyType(
         {
@@ -96,9 +91,7 @@ def dashboard_login_empty_creds(
     ] * 5
 
 
-def dashboard_login_without_username(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage]]:
+def dashboard_login_without_username(driver: WebDriver, logger: ILogger):
     """Verify the page doesn't change when pushing login form without login."""
     dashboard_creds: MappingProxyType[ImmutableCredentialsKeys, str] = MappingProxyType(
         {
@@ -147,9 +140,7 @@ def dashboard_login_without_username(
     ] * 5
 
 
-def dashboard_login_without_password(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage]]:
+def dashboard_login_without_password(driver: WebDriver, logger: ILogger):
     """Verify the page doesn't change when pushing login form without login."""
     dashboard_creds: MappingProxyType[ImmutableCredentialsKeys, str] = MappingProxyType(
         {
@@ -198,9 +189,7 @@ def dashboard_login_without_password(
     ] * 5
 
 
-def dashboard_login_invalid_pair(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage]]:
+def dashboard_login_invalid_pair(driver: WebDriver, logger: ILogger):
     """Verify the page display an error message when pushing invalid creds pair."""
     dashboard_creds: MappingProxyType[ImmutableCredentialsKeys, str] = MappingProxyType(
         {
@@ -263,7 +252,7 @@ def dashboard_login_invalid_pair(
 
 def dashboard_access_to_protected_page_without_otp_using_the_ui(
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardWelcomePage]]:
+):
     """Verify the page display an error message when lacking OTP."""
     on_dashboard_welcome_page = DashboardWelcomePage(driver=driver)
 
@@ -299,7 +288,7 @@ def dashboard_access_to_protected_page_without_otp_using_the_ui(
 
 def dashboard_access_to_protected_page_without_otp_using_the_url(
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardProtectedPage] | ChainRunner[DashboardWelcomePage]]:
+):
     """Verify the redirection."""
     on_dashboard_protected_page = DashboardProtectedPage(driver=driver)
     on_dashboard_welcome_page = DashboardWelcomePage(driver=driver)
@@ -339,7 +328,7 @@ def dashboard_access_to_protected_page_without_otp_using_the_url(
 
 def dashboard_access_to_protected_page_without_login(
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardProtectedPage] | ChainRunner[DashboardLoginPage]]:
+):
     """Verify the redirection."""
     on_dashboard_protected_page = DashboardProtectedPage(driver=driver)
     on_dashboard_login_page = DashboardLoginPage(driver=driver)

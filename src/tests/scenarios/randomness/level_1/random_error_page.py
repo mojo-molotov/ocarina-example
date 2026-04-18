@@ -20,16 +20,11 @@ from lib.ext.ocarina.adapters.selenium.logs import (
 from pages.random_error import RandomErrorPage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def random_error_render(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[RandomErrorPage]]:
+def random_error_render(driver: WebDriver, logger: ILogger):
     """Verify that random error page reaches its first render."""
     on_random_error_page = RandomErrorPage(driver=driver)
 

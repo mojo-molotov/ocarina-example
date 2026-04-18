@@ -23,16 +23,11 @@ from lib.ext.ocarina.adapters.selenium.logs import (
 from pages.corsicamon.enter_api_key import CorsicamonEnterApiKeyPage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def enter_api_key(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonEnterApiKeyPage]]:
+def enter_api_key(driver: WebDriver, logger: ILogger):
     """Enter the API key."""
     on_corsicamon_enter_api_key_page = CorsicamonEnterApiKeyPage(driver=driver)
 
@@ -76,9 +71,7 @@ def enter_api_key(
     ]
 
 
-def fail_to_enter_api_key(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsicamonEnterApiKeyPage]]:
+def fail_to_enter_api_key(driver: WebDriver, logger: ILogger):
     """Fail to enter the API key."""
     on_corsicamon_enter_api_key_page = CorsicamonEnterApiKeyPage(driver=driver)
 

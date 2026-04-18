@@ -37,16 +37,11 @@ from pages.dashboard.protected_page import DashboardProtectedPage
 from pages.dashboard.welcome_page import DashboardWelcomePage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def dashboard_login_without_otp_happy_path(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage] | ChainRunner[DashboardWelcomePage]]:
+def dashboard_login_without_otp_happy_path(driver: WebDriver, logger: ILogger):
     """Verify that we can connect without OTP."""
     dashboard_creds = create_env_getters().get_credentials("dashboard")
 
@@ -113,13 +108,7 @@ def dashboard_login_without_otp_happy_path(
     ]
 
 
-def dashboard_login_with_otp_happy_path(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[
-    ChainRunner[DashboardLoginPage]
-    | ChainRunner[DashboardWelcomePage]
-    | ChainRunner[DashboardProtectedPage]
-]:
+def dashboard_login_with_otp_happy_path(driver: WebDriver, logger: ILogger):
     """Verify that we can connect without OTP."""
     dashboard_creds = create_env_getters().get_credentials("dashboard")
 

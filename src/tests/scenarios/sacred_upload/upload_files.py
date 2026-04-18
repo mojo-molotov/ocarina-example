@@ -28,16 +28,11 @@ from lib.ext.ocarina.adapters.selenium.logs import (
 from pages.sacred_upload.sacred_upload import SacredUploadPage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def upload_some_files(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+def upload_some_files(driver: WebDriver, logger: ILogger):
     """Verify that uploading files works properly."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 
@@ -97,9 +92,7 @@ def upload_some_files(
     ]
 
 
-def upload_some_files_passing_by_delete_img_button(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+def upload_some_files_passing_by_delete_img_button(driver: WebDriver, logger: ILogger):
     """Verify that uploading files works properly."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 
@@ -284,9 +277,7 @@ def upload_some_files_passing_by_delete_img_button(
     ]
 
 
-def upload_some_files_passing_by_sin_button(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+def upload_some_files_passing_by_sin_button(driver: WebDriver, logger: ILogger):
     """Verify that uploading files works properly."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 
@@ -360,9 +351,7 @@ def upload_some_files_passing_by_sin_button(
     ]
 
 
-def try_to_upload_too_much_files_immediately(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+def try_to_upload_too_much_files_immediately(driver: WebDriver, logger: ILogger):
     """Verify putting a lot of images in one-shot = 0 image registered."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 
@@ -413,7 +402,7 @@ def try_to_upload_too_much_files_immediately(
 
 def try_to_upload_too_much_files_after_first_insertion(
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+):
     """Verify putting a lot of images in two-shots = n first-shot images registered."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 

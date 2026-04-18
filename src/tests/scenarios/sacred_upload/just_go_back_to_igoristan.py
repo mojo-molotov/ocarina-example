@@ -22,16 +22,11 @@ from pages.sacred_upload.sacred_upload import SacredUploadPage
 from tests.scenarios.homepage.verify_homepage import verify_homepage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def just_go_back_to_igoristan(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[SacredUploadPage]]:
+def just_go_back_to_igoristan(driver: WebDriver, logger: ILogger):
     """Verify that random loaders page reaches its first render."""
     on_sacred_upload_page = SacredUploadPage(driver=driver)
 

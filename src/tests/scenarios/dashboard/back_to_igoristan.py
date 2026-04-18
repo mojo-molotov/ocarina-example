@@ -21,16 +21,11 @@ from pages.dashboard.login import DashboardLoginPage
 from tests.scenarios.homepage.verify_homepage import verify_homepage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def just_go_back_to_igoristan(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[DashboardLoginPage]]:
+def just_go_back_to_igoristan(driver: WebDriver, logger: ILogger):
     """Verify the 'go back to Igoristan' link."""
     on_dashboard_login_page = DashboardLoginPage(driver=driver)
 

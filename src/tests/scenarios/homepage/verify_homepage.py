@@ -20,16 +20,13 @@ from lib.ext.ocarina.adapters.selenium.logs import (
 from pages.homepage import Homepage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def _open_homepage(
+def _open_homepage(  # noqa: ANN202
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[Homepage]]:
+):
     """Open the homepage."""
     on_homepage = Homepage(driver=driver)
 
@@ -45,9 +42,7 @@ def _open_homepage(
     ]
 
 
-def verify_homepage(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[Homepage]]:
+def verify_homepage(driver: WebDriver, logger: ILogger):
     """Verify the homepage."""
     on_homepage = Homepage(driver=driver)
 

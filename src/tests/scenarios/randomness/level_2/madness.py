@@ -27,16 +27,11 @@ from pages.madness.matchers import MadnessPageMatchers
 from pages.madness.this_is_bastia import ThisIsBastiaPage
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def madness_page_render(
-    driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[MadnessPage] | ChainRunner[CorsPage | ThisIsBastiaPage]]:
+def madness_page_render(driver: WebDriver, logger: ILogger):
     """Verify that random madness page reaches its first render."""
     on_madness_page = MadnessPage(driver=driver)
     on_cors_page = CorsPage(driver=driver)
