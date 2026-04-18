@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -136,18 +137,24 @@ def add_corsicamon(
 
 test_try_to_add_corsicamon_using_already_in_draw_id = create_selenium_test(
     name="Fail to add Corsicamon (already in draw ID)",
-    test_scenario=try_to_add_corsicamon_using_already_in_draw_id,
-    pre_test_scenarios=[enter_api_key],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=try_to_add_corsicamon_using_already_in_draw_id(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[enter_api_key],
 )
 
 test_try_to_add_corsicamon_using_invalid_id = create_selenium_test(
     name="Fail to add Corsicamon (invalid ID)",
-    test_scenario=try_to_add_corsicamon_using_invalid_id,
-    pre_test_scenarios=[enter_api_key],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=try_to_add_corsicamon_using_invalid_id(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[enter_api_key],
 )
 
 test_add_corsicamon = create_selenium_test(
     name="Add Corsicamon",
-    test_scenario=add_corsicamon,
-    pre_test_scenarios=[enter_api_key],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=add_corsicamon(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[enter_api_key],
 )

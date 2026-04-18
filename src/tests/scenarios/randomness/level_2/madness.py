@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.dsl.testing_with_railway.match_page import when
 from ocarina.opinionated.dsl.drive_page import drive_page
@@ -101,5 +102,7 @@ def madness_page_render(
 
 test_madness_page_render = create_selenium_test(
     name="Madness page render",
-    test_scenario=madness_page_render,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=madness_page_render(driver, logger)
+    ),
 )

@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -123,10 +124,14 @@ def fail_to_enter_api_key(
 
 test_enter_api_key = create_selenium_test(
     name="Enter API key",
-    test_scenario=enter_api_key,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=enter_api_key(driver, logger)
+    ),
 )
 
 test_fail_to_enter_api_key = create_selenium_test(
     name="Fail to enter API key",
-    test_scenario=fail_to_enter_api_key,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=fail_to_enter_api_key(driver, logger)
+    ),
 )

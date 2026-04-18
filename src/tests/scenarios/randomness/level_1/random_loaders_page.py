@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -122,10 +123,12 @@ def click_go_back_btn(
 
 test_random_loaders_page_full_load_and_back_to_homepage = create_selenium_test(
     name="Random Loaders page full load + use the go back to Igoristan button",
-    test_scenario=click_go_back_btn,
-    pre_test_scenarios=[
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=click_go_back_btn(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[
         _random_loaders_first_render,
         _random_loaders_full_load_happy_path,
     ],
-    post_test_scenarios=[verify_homepage],
+    post_test_scenarios_fragments=[verify_homepage],
 )

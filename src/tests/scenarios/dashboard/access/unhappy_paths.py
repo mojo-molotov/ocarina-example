@@ -3,6 +3,7 @@
 from types import MappingProxyType
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -378,41 +379,59 @@ def dashboard_access_to_protected_page_without_login(
 
 test_login_page_doesnt_change_when_pushing_empty_login_form = create_selenium_test(
     name="No page change when pushing empty form",
-    test_scenario=dashboard_login_empty_creds,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_login_empty_creds(driver, logger)
+    ),
 )
 
 test_login_page_doesnt_change_when_pushing_login_form_without_username = (
     create_selenium_test(
         name="No page change when pushing login form without username",
-        test_scenario=dashboard_login_without_username,
+        test_scenario=lambda driver, logger: Scenario(
+            test_chain=dashboard_login_without_username(driver, logger)
+        ),
     )
 )
 
 test_login_page_doesnt_change_when_pushing_login_form_without_password = (
     create_selenium_test(
         name="No page change when pushing login form without password",
-        test_scenario=dashboard_login_without_password,
+        test_scenario=lambda driver, logger: Scenario(
+            test_chain=dashboard_login_without_password(driver, logger)
+        ),
     )
 )
 
 test_login_attempt_with_invalid_pair_shows_an_error_message = create_selenium_test(
     name="An error message is displayed on login fail",
-    test_scenario=dashboard_login_invalid_pair,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_login_invalid_pair(driver, logger)
+    ),
 )
 
 test_cant_access_the_protected_page_without_otp_using_the_ui = create_selenium_test(
     name="Can't access the protected page without OTP (using the UI)",
-    test_scenario=dashboard_access_to_protected_page_without_otp_using_the_ui,
-    pre_test_scenarios=[dashboard_login_without_otp_happy_path],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_access_to_protected_page_without_otp_using_the_ui(
+            driver, logger
+        )
+    ),
+    pre_test_scenarios_fragments=[dashboard_login_without_otp_happy_path],
 )
 
 test_cant_access_the_protected_page_without_otp_using_the_url = create_selenium_test(
     name="Can't access the protected page without OTP (using the URL)",
-    test_scenario=dashboard_access_to_protected_page_without_otp_using_the_url,
-    pre_test_scenarios=[dashboard_login_without_otp_happy_path],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_access_to_protected_page_without_otp_using_the_url(
+            driver, logger
+        )
+    ),
+    pre_test_scenarios_fragments=[dashboard_login_without_otp_happy_path],
 )
 
 test_cant_access_any_dashboard_page_without_login = create_selenium_test(
     name="Can't access the protected page without login (using URL)",
-    test_scenario=dashboard_access_to_protected_page_without_login,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_access_to_protected_page_without_login(driver, logger)
+    ),
 )

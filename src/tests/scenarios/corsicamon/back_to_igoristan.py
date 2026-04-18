@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -115,13 +116,17 @@ def go_back_to_igoristan_on_enter_api_key_screen(
 
 test_go_back_to_igoristan_on_enter_api_key_screen = create_selenium_test(
     name="Go back to Igoristan without entering the API key",
-    test_scenario=go_back_to_igoristan_on_enter_api_key_screen,
-    post_test_scenarios=[verify_homepage],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=go_back_to_igoristan_on_enter_api_key_screen(driver, logger)
+    ),
+    post_test_scenarios_fragments=[verify_homepage],
 )
 
 test_go_back_to_igoristan_on_main_screen = create_selenium_test(
     name="Enter the API key then go back to Igoristan",
-    test_scenario=go_back_to_igoristan_on_main_screen,
-    pre_test_scenarios=[enter_api_key],
-    post_test_scenarios=[verify_homepage],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=go_back_to_igoristan_on_main_screen(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[enter_api_key],
+    post_test_scenarios_fragments=[verify_homepage],
 )

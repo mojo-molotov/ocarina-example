@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -73,6 +74,8 @@ def just_go_back_to_igoristan(
 
 test_dashboard_login_page_back_to_igoristan_button = create_selenium_test(
     name="Use the go back to Igoristan button",
-    test_scenario=just_go_back_to_igoristan,
-    post_test_scenarios=[verify_homepage],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=just_go_back_to_igoristan(driver, logger)
+    ),
+    post_test_scenarios_fragments=[verify_homepage],
 )

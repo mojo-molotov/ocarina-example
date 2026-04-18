@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -72,6 +73,11 @@ def make_a_new_draw(
 
 test_make_a_new_draw = create_selenium_test(
     name="Make a new draw",
-    test_scenario=make_a_new_draw,
-    pre_test_scenarios=[enter_api_key, try_to_add_corsicamon_using_invalid_id],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=make_a_new_draw(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[
+        enter_api_key,
+        try_to_add_corsicamon_using_invalid_id,
+    ],
 )

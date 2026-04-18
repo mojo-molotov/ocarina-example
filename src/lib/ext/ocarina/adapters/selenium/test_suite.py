@@ -47,6 +47,7 @@ class TestSuite(OriginalTestSuite[WebDriver]):
         super().__init__(
             name=name,
             tests=tests,
+            max_retries_per_test=8,
             create_logger=create_logger,
             drivers_pool=drivers_pool,
             copy_indicator=copy_indicator,

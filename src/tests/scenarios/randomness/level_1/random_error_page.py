@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -65,5 +66,7 @@ def random_error_render(
 
 test_random_error_page_render = create_selenium_test(
     name="Random error page render",
-    test_scenario=random_error_render,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=random_error_render(driver, logger)
+    ),
 )

@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -239,10 +240,14 @@ def dashboard_login_with_otp_happy_path(
 
 test_dashboard_login_without_otp_happy_path = create_selenium_test(
     name="Connect to the dashboard, without OTP",
-    test_scenario=dashboard_login_without_otp_happy_path,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_login_without_otp_happy_path(driver, logger)
+    ),
 )
 
 test_dashboard_login_with_otp_happy_path = create_selenium_test(
     name="Connect to the dashboard, with OTP",
-    test_scenario=dashboard_login_with_otp_happy_path,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=dashboard_login_with_otp_happy_path(driver, logger)
+    ),
 )

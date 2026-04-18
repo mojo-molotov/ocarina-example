@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -78,6 +79,8 @@ def verify_homepage(
 
 test_homepage = create_selenium_test(
     name="Validate homepage",
-    test_scenario=verify_homepage,
-    pre_test_scenarios=[_open_homepage],
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=verify_homepage(driver, logger)
+    ),
+    pre_test_scenarios_fragments=[_open_homepage],
 )

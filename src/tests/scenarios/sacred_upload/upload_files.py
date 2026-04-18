@@ -3,6 +3,7 @@
 from random import randint
 from typing import TYPE_CHECKING
 
+from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
@@ -477,25 +478,35 @@ def try_to_upload_too_much_files_after_first_insertion(
 
 test_sacred_upload_form_with_some_files = create_selenium_test(
     name="Upload some files",
-    test_scenario=upload_some_files,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=upload_some_files(driver, logger)
+    ),
 )
 
 test_sacred_upload_form_with_some_files_passing_by_sin_btn = create_selenium_test(
     name="Upload some files, also playing with the upload cancel button",
-    test_scenario=upload_some_files_passing_by_sin_button,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=upload_some_files_passing_by_sin_button(driver, logger)
+    ),
 )
 
 test_sacred_upload_form_with_some_files_passing_by_del_btn = create_selenium_test(
     name="Upload some files, also playing with the delete image buttons",
-    test_scenario=upload_some_files_passing_by_delete_img_button,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=upload_some_files_passing_by_delete_img_button(driver, logger)
+    ),
 )
 
 test_sacred_upload_try_with_too_much_files_immediately = create_selenium_test(
     name="Try to put too much files in the dropzone",
-    test_scenario=try_to_upload_too_much_files_immediately,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=try_to_upload_too_much_files_immediately(driver, logger)
+    ),
 )
 
 test_sacred_upload_try_with_too_much_files_after_first_insertion = create_selenium_test(
     name="Put 1 file in the dropzone, then try to drop too much files",
-    test_scenario=try_to_upload_too_much_files_after_first_insertion,
+    test_scenario=lambda driver, logger: Scenario(
+        test_chain=try_to_upload_too_much_files_after_first_insertion(driver, logger)
+    ),
 )
