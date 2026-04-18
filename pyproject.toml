@@ -11,7 +11,7 @@ dependencies = [
     "requests>=2.33.0",
     "redis>=7.4.0",
 ]
-# TESTING: Also run manually: pip install --index-url https://test.pypi.org/simple/ ocarina==...
+# TESTING: Also run manually: pip install --index-url https://test.pypi.org/simple/ ocarina
 
 [dependency-groups]
 dev = [
