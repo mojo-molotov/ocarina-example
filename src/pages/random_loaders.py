@@ -3,8 +3,6 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -134,18 +132,23 @@ class RandomLoadersPage(SeleniumTitleMixin, POMBase):
     def verify_full_load(self) -> RandomLoadersPage:
         """Verify that all random loaders page is loaded."""
         timeout = 20  # Hard-coded since loaders are slow here.
-        WebDriverWait(self._driver, timeout).until(
-            ec.presence_of_all_elements_located(self._random_loaders_elements)
-        )
 
-        random_loaders_elements = self._driver.find_elements(
-            By.CLASS_NAME, self._random_loaders_elements_class
-        )
+        def _all_loaders_present_and_valid(driver: WebDriver) -> bool:
+            elements = driver.find_elements(
+                By.CLASS_NAME, self._random_loaders_elements_class
+            )
+            if len(elements) != 64:  # noqa: PLR2004
+                return False
+            try:
+                return all(
+                    h1.text in _DECK
+                    for el in elements
+                    for h1 in [el.find_element(By.TAG_NAME, "h1")]
+                )
+            except Exception:  # noqa: BLE001
+                return False
 
-        assert len(random_loaders_elements) == 64, "Expected 64 elements."  # noqa: PLR2004
-        for random_loader in random_loaders_elements:
-            h1 = random_loader.find_element(By.TAG_NAME, "h1")
-            assert h1.text in _DECK, f"Unexpected value: '{h1.text}'"
+        WebDriverWait(self._driver, timeout).until(_all_loaders_present_and_valid)
 
         return self
 

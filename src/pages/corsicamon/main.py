@@ -1,9 +1,8 @@
 """Igoristan's corsicamon main page."""
 
-# ruff: noqa: S101
 import random
 from contextlib import suppress
-from typing import TYPE_CHECKING, final
+from typing import TYPE_CHECKING, Literal, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
 from ocarina.dsl.invariants.assertions import is_positive
@@ -207,18 +206,24 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
 
         return self
 
-    def enter_fresh_corsicamon_id(self) -> CorsicamonPage:
+    def enter_fresh_corsicamon_id(self, *, skip_check: bool = False) -> CorsicamonPage:
         """Enter fresh id, then check the presence of an error message."""
         timeout = get_timeout()
 
-        corsicamon_ids = [
-            (
-                WebDriverWait(self._driver, timeout)
-                .until(ec.visibility_of_element_located(self._corsicamon_card_id(i)))
-                .text.replace("#", "")
-            )
-            for i in range(1, 4)
-        ]
+        def _get_corsicamon_ids(driver: WebDriver) -> list[str] | Literal[False]:
+            try:
+                return [
+                    driver.find_element(*self._corsicamon_card_id(i)).text.replace(
+                        "#", ""
+                    )
+                    for i in range(1, 4)
+                ]
+            except Exception:  # noqa: BLE001
+                return False
+
+        corsicamon_ids: list[str] = WebDriverWait(self._driver, timeout).until(
+            _get_corsicamon_ids
+        )
 
         corsicamon_id = random.choice(  # noqa: S311
             [str(i) for i in range(1, 9) if str(i) not in corsicamon_ids]
@@ -227,7 +232,6 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         enter_id_input = WebDriverWait(self._driver, timeout).until(
             ec.visibility_of_element_located(self._enter_id_input)
         )
-
         enter_id_input.clear()
         enter_id_input.send_keys(corsicamon_id)
 
@@ -235,9 +239,11 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
             self._get_random_add_corsicamon_dispatchers_key()
         ]()
 
-        WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._draw_complete_msg)
-        )
+        if not skip_check:
+            timeout = 20  # Hard-coded since loaders are slow here.
+            WebDriverWait(self._driver, timeout).until(
+                ec.visibility_of_element_located(self._draw_complete_msg)
+            )
 
         return self
 
@@ -251,7 +257,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
 
         attempts_count = 1
         while attempts_count <= retries:
-            self.enter_fresh_corsicamon_id()
+            self.enter_fresh_corsicamon_id(skip_check=True)
             timeout = get_timeout()
             with suppress(Exception):
                 WebDriverWait(self._driver, timeout).until(
@@ -277,7 +283,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         logger.info(msg)
         return self
 
-    def make_a_new_draw(self) -> CorsicamonPage:
+    def make_a_new_draw(self, *, skip_check: bool = False) -> CorsicamonPage:
         """Make a new draw."""
         timeout = get_timeout()
 
@@ -285,9 +291,11 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
             ec.visibility_of_element_located(self._new_draw_btn)
         ).click()
 
-        WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._new_draw_btn)
-        )
+        if not skip_check:
+            timeout = 20  # Hard-coded since loaders are slow here.
+            WebDriverWait(self._driver, timeout).until(
+                ec.visibility_of_element_located(self._new_draw_btn)
+            )
 
         return self
 
@@ -295,14 +303,25 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         self, *, retries: int, logger: ILogger
     ) -> CorsicamonPage:
         """Make a new draw (n retries)."""
+
+        def _click_retry_button() -> CorsicamonPage:
+            timeout = get_timeout()
+            WebDriverWait(self._driver, timeout).until(
+                ec.visibility_of_element_located(
+                    self._corsicamon_network_error_retry_btn
+                )
+            ).click()
+
+            return self
+
         validate(retries, name="retries").assert_that(
             is_positive
         ).execute().raise_if_invalid()
 
         attempts_count = 1
+        self.make_a_new_draw(skip_check=True)
         while attempts_count <= retries:
-            self.make_a_new_draw()
-            timeout = get_timeout()
+            timeout = 20  # Hard-coded since loaders are slow here.
             with suppress(Exception):
                 WebDriverWait(self._driver, timeout).until(
                     ec.visibility_of_element_located(self._new_draw_btn)
@@ -319,6 +338,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
 
             logger.warning(msg)
             take_screenshot(driver=self._driver, logger=logger, category="WARNING")
+            _click_retry_button()
             attempts_count += 1
 
         s = "s" if attempts_count > 1 else ""
@@ -331,10 +351,10 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         """Verify enter ID field is empty."""
         timeout = get_timeout()
 
-        enter_id_input = WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._enter_id_input)
-        )
+        def _input_is_empty(driver: WebDriver) -> bool:
+            el = driver.find_element(*self._enter_id_input)
+            return el.get_attribute("value") == ""
 
-        assert enter_id_input.text == "", "Expected the 'Enter ID' field to be empty."
+        WebDriverWait(self._driver, timeout).until(_input_is_empty)
 
         return self

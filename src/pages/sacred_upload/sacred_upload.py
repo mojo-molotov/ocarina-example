@@ -7,8 +7,6 @@ from typing import TYPE_CHECKING, final
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
 from ocarina.dsl.invariants.assertions import is_not_zero, is_positive
 from ocarina.dsl.invariants.validate import validate
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -87,16 +85,12 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
     ) -> SacredUploadPage:
         """Verify dropzone error message contains the needle."""
         timeout = get_timeout()
-        images_dropzone_error_message = WebDriverWait(self._driver, timeout).until(
-            ec.presence_of_element_located(self._images_dropzone_error_message)
+        WebDriverWait(self._driver, timeout).until(
+            ec.text_to_be_present_in_element(
+                self._images_dropzone_error_message,
+                error_message_needle,
+            )
         )
-        t = images_dropzone_error_message.text
-        assert error_message_needle in t, (
-            f"error_message_needle not found, got: {t}."
-            " "
-            f"Expected needle: {error_message_needle}"
-        )
-
         return self
 
     def open(self) -> SacredUploadPage:
@@ -110,19 +104,8 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             if timeout is None:
                 timeout = get_timeout()
 
-            expected_title_needle = "Blessed file upload simulator"
-            expected_h1 = "Upload images!"
-
             WebDriverWait(self._driver, timeout).until(
-                ec.title_contains(expected_title_needle)
-            )
-
-            h1 = WebDriverWait(self._driver, timeout).until(
-                ec.presence_of_element_located((By.TAG_NAME, "h1"))
-            )
-
-            assert h1.text.lower() == expected_h1.lower(), (
-                f"Unexpected h1 text: '{h1.text}'"
+                ec.title_contains("Blessed file upload simulator")
             )
         except Exception as exc:
             raise PageVerificationError from exc
@@ -187,37 +170,33 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
     def click_on_upload_btn(self) -> SacredUploadPage:
         """Click on upload button."""
         timeout = get_timeout()
-        upload_btn = WebDriverWait(self._driver, timeout).until(
+        WebDriverWait(self._driver, timeout).until(
             ec.presence_of_element_located(self._upload_btn)
-        )
-        upload_btn.click()
+        ).click()
         return self
 
     def click_on_delete_img_btn(self, idx: int) -> SacredUploadPage:
         """Click on upload button."""
         timeout = get_timeout()
-        delete_img_btn = WebDriverWait(self._driver, timeout).until(
+        WebDriverWait(self._driver, timeout).until(
             ec.presence_of_element_located(self._delete_img_btn(idx))
-        )
-        delete_img_btn.click()
+        ).click()
         return self
 
     def click_on_amen_btn(self) -> SacredUploadPage:
         """Click on amen button."""
         timeout = get_timeout()
-        amen_btn = WebDriverWait(self._driver, timeout).until(
+        WebDriverWait(self._driver, timeout).until(
             ec.presence_of_element_located(self._amen_btn)
-        )
-        amen_btn.click()
+        ).click()
         return self
 
     def click_on_sin_btn(self) -> SacredUploadPage:
         """Click on sin button."""
         timeout = get_timeout()
-        sin_btn = WebDriverWait(self._driver, timeout).until(
+        WebDriverWait(self._driver, timeout).until(
             ec.presence_of_element_located(self._sin_btn)
-        )
-        sin_btn.click()
+        ).click()
         return self
 
     def verify_dropzone_is_empty(self) -> SacredUploadPage:

@@ -3,8 +3,6 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -61,17 +59,13 @@ class DashboardWelcomePage(SeleniumTitleMixin, POMBase):
                 timeout=timeout,
             )
 
-            needle = "Dashboard"
-            expected_h1 = "Dashboard"
+            WebDriverWait(self._driver, timeout).until(ec.title_contains("Dashboard"))
 
-            WebDriverWait(self._driver, timeout).until(ec.title_contains(needle))
-
-            h1 = WebDriverWait(self._driver, timeout).until(
-                ec.presence_of_element_located((By.TAG_NAME, "h1"))
-            )
-
-            assert h1.text.lower() == expected_h1.lower(), (
-                f"Unexpected h1 text: '{h1.text}'"
+            WebDriverWait(self._driver, timeout).until(
+                ec.text_to_be_present_in_element(
+                    (By.TAG_NAME, "h1"),
+                    "Dashboard",
+                )
             )
         except Exception as exc:
             raise PageVerificationError from exc
@@ -99,8 +93,7 @@ class DashboardWelcomePage(SeleniumTitleMixin, POMBase):
     def click_on_go_to_nested_page_btn(self) -> DashboardWelcomePage:
         """Click on go to nested page btn."""
         timeout = get_timeout()
-        btn = WebDriverWait(self._driver, timeout).until(
+        WebDriverWait(self._driver, timeout).until(
             ec.presence_of_element_located(self._dashboard_protected_page_link)
-        )
-        btn.click()
+        ).click()
         return self
