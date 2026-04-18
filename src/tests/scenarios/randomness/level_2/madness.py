@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING
 
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
+from ocarina.dsl.testing_with_railway.match_page import when
 from ocarina.opinionated.dsl.drive_page import drive_page
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 
@@ -11,6 +12,7 @@ from lib.connectors.test_steps.actions.madness_page import (
     verify_cors_page,
     verify_this_is_bastia_page,
 )
+from lib.ext.ocarina.adapters.agnostic.match_page import match_page
 from lib.ext.ocarina.adapters.selenium.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
@@ -18,7 +20,6 @@ from lib.ext.ocarina.adapters.selenium.logs import (
     create_log_error_with_current_url,
     create_log_success_with_current_url_and_take_screenshot,
 )
-from lib.ext.ocarina.incubator.match_page import match_page, when
 from pages.madness.cors import CorsPage
 from pages.madness.matchers import MadnessPageMatchers
 from pages.madness.this_is_bastia import ThisIsBastiaPage
