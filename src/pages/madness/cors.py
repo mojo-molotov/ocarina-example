@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
-from constants.pages.madness import MADNESS_PAGE_URL
 from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
 
 if TYPE_CHECKING:
@@ -20,15 +19,9 @@ if TYPE_CHECKING:
 class CorsPage(SeleniumTitleMixin, POMBase):
     """Is madness."""
 
-    def __init__(self, *, driver: WebDriver, url: str = MADNESS_PAGE_URL) -> None:
+    def __init__(self, *, driver: WebDriver) -> None:
         """Initialize POM."""
         self._driver = driver
-        self._URL = url
-
-    def open(self) -> CorsPage:
-        """Open the page."""
-        self._driver.get(self._URL)
-        return self
 
     def verify(self, *, timeout: float | None = None) -> CorsPage:
         """Verify function."""

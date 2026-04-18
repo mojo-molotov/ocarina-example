@@ -8,7 +8,7 @@ from ocarina.opinionated.dsl.drive_page import drive_page
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 
 from lib.connectors.test_steps.actions.madness_page import (
-    open_cors_page_url,
+    open_madness_page,
     verify_cors_page,
     verify_this_is_bastia_page,
 )
@@ -20,6 +20,7 @@ from lib.ext.ocarina.adapters.selenium.logs import (
     create_log_error_with_current_url,
     create_log_success_with_current_url_and_take_screenshot,
 )
+from pages.madness.base import MadnessPage
 from pages.madness.cors import CorsPage
 from pages.madness.matchers import MadnessPageMatchers
 from pages.madness.this_is_bastia import ThisIsBastiaPage
@@ -34,8 +35,9 @@ if TYPE_CHECKING:
 
 def madness_page_render(
     driver: WebDriver, logger: ILogger
-) -> Sequence[ChainRunner[CorsPage]]:
+) -> Sequence[ChainRunner[MadnessPage] | ChainRunner[CorsPage | ThisIsBastiaPage]]:
     """Verify that random madness page reaches its first render."""
+    on_madness_page = MadnessPage(driver=driver)
     on_cors_page = CorsPage(driver=driver)
     on_this_is_bastia_page = ThisIsBastiaPage(driver=driver)
     check_that_madness = MadnessPageMatchers(driver=driver)
@@ -53,7 +55,7 @@ def madness_page_render(
 
     return [
         drive_page(
-            act(on_cors_page, open_cors_page_url)
+            act(on_madness_page, open_madness_page)
             .failure(just_log_error("Failed to open the madness page..."))
             .success(just_log_success("Opened the madness page!")),
         ),

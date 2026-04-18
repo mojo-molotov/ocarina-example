@@ -3,21 +3,15 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from pages.madness.base import MadnessPage
     from pages.madness.cors import CorsPage
     from pages.madness.this_is_bastia import ThisIsBastiaPage
 
 
-def open_cors_page_url(
-    p: CorsPage,
-) -> CorsPage:
-    """Open the madness page URL (typed to be called from CorsPage)."""
-    return p.open()
-
-
-def open_this_is_bastia_page_url(
-    p: ThisIsBastiaPage,
-) -> ThisIsBastiaPage:
-    """Open the madness page URL (typed to be called from ThisIsBastiaPage)."""
+def open_madness_page(
+    p: MadnessPage,
+) -> MadnessPage:
+    """Open the madness page."""
     return p.open()
 
 
