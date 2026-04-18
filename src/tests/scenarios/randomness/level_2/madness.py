@@ -38,7 +38,7 @@ def madness_page_render(
     """Verify that random madness page reaches its first render."""
     on_cors_page = CorsPage(driver=driver)
     on_this_is_bastia_page = ThisIsBastiaPage(driver=driver)
-    check_that = MadnessPageMatchers(driver=driver)
+    check_that_madness = MadnessPageMatchers(driver=driver)
 
     just_log_error = create_just_log_error(logger=logger)
     log_error_with_current_url = create_log_error_with_current_url(
@@ -60,7 +60,7 @@ def madness_page_render(
         match_page(
             branches=[
                 when(
-                    check_that.is_cors_page,
+                    check_that_madness.is_cors_page,
                     name="is_cors_page",
                     then=[
                         drive_page(
@@ -75,7 +75,7 @@ def madness_page_render(
                     ],
                 ),
                 when(
-                    check_that.is_bastia_page,
+                    check_that_madness.is_bastia_page,
                     name="is_bastia_page",
                     then=[
                         drive_page(
