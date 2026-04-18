@@ -12,7 +12,7 @@ from lib.connectors.test_steps.actions.random_loaders import (
     verify_full_load,
     verify_random_loaders_page,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

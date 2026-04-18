@@ -6,7 +6,7 @@ from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_timeout
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver

@@ -17,7 +17,7 @@ from lib.connectors.test_steps.actions.sacred_upload import (
     verify_dropzone_is_empty,
     verify_sacred_upload_page,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

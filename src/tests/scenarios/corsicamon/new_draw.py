@@ -10,7 +10,7 @@ from lib.connectors.test_steps.actions.corsicamon_main import (
     make_a_new_draw_with_retries,
     verify_enter_id_field_is_empty,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_log_success_with_current_url_and_take_screenshot,

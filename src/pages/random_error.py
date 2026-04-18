@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 from constants.pages.random_error_page import RANDOM_ERROR_PAGE_URL
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_timeout
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver

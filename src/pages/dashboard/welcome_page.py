@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 from constants.pages.dashboard import DASHBOARD_URL
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_timeout
 from lib.ext.selenium.pages.verify_elements_presence import verify_elements_presence
 
 if TYPE_CHECKING:

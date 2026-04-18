@@ -17,8 +17,8 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 from constants.pages.corsicamon import CORSICAMON_PAGE_URL
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_timeout
 from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_timeout
 from lib.ext.ocarina.adapters.selenium.screenshotter import take_screenshot
 from lib.ext.selenium.pages.verify_elements_presence import verify_elements_presence
 

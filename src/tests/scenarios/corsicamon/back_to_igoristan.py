@@ -14,7 +14,7 @@ from lib.connectors.test_steps.actions.corsicamon_enter_api_key import (
 from lib.connectors.test_steps.actions.corsicamon_main import (
     click_back_to_igoristan_link as click_back_to_igoristan_link_on_main_screen,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

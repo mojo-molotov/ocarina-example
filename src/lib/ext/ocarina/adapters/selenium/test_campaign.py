@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, final
 from ocarina.dsl.testing.oc_test_campaign import TestCampaign as OriginalTestCampaign
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_max_workers
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_max_workers
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

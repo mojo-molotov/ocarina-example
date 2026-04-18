@@ -23,9 +23,9 @@ from lib.connectors.test_steps.actions.dashboard_welcome import (
     click_on_go_to_nested_page_btn,
     verify_dashboard_welcome_page,
 )
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_max_workers
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_max_workers
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

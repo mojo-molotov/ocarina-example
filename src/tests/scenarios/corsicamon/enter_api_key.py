@@ -14,7 +14,7 @@ from lib.connectors.test_steps.actions.corsicamon_enter_api_key import (
 from lib.connectors.test_steps.actions.corsicamon_enter_api_key import (
     fail_to_enter_api_key as _fail_to_enter_api_key,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

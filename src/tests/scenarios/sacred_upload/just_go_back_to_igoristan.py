@@ -11,7 +11,7 @@ from lib.connectors.test_steps.actions.sacred_upload import (
     open_sacred_upload_page,
     verify_sacred_upload_page,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

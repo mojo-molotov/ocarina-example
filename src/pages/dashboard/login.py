@@ -29,8 +29,8 @@ from api.retrieve_dashboard_otp_code import retrieve_dashboard_otp_code
 from constants.pages.dashboard import DASHBOARD_URL
 from constants.sys.redis_keys import OTP_SEND_LOCK_KEY
 from lib.custom_errors.transient_error import TransientError
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_max_workers, get_timeout
 from lib.ext.ocarina.adapters.agnostic.env_getters import create_env_getters
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_max_workers, get_timeout
 from lib.ext.ocarina.adapters.selenium.screenshotter import take_screenshot
 from lib.ext.redis.client import get_redis_client
 from lib.ext.selenium.pages.verify_elements_presence import verify_elements_presence

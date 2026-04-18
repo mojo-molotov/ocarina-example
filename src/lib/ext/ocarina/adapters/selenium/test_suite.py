@@ -8,7 +8,7 @@ from ocarina.opinionated.loggers.create_matching_logger import create_matching_l
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from constants.sys.transient_errors import transient_errors
-from lib.ext.ocarina.adapters.agnostic.cli_getters import get_logger_mode
+from lib.ext.ocarina.adapters.selenium.cli_getters import get_logger_mode
 from lib.ext.ocarina.adapters.selenium.screenshotter import take_screenshot_unstrict
 
 if TYPE_CHECKING:

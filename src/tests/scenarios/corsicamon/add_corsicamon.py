@@ -12,7 +12,7 @@ from lib.connectors.test_steps.actions.corsicamon_main import (
     enter_invalid_corsicamon_id,
     verify_corsicamon_main_page,
 )
-from lib.ext.ocarina.adapters.selenium.act import act
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,

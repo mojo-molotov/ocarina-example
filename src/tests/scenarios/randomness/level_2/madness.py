@@ -13,8 +13,8 @@ from lib.connectors.test_steps.actions.madness_page import (
     verify_cors_page,
     verify_this_is_bastia_page,
 )
+from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.agnostic.match_page import match_page
-from lib.ext.ocarina.adapters.selenium.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
     create_just_log_success,
