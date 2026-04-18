@@ -1,4 +1,4 @@
-"""Dashboard login tests (misc)."""
+"""Go back to Igoristan from Dashboard login screen."""
 
 from typing import TYPE_CHECKING
 

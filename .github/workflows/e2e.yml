@@ -85,7 +85,7 @@ jobs:
 
         run: |
           source $VENV_ACTIVATE
-          pip install --index-url https://test.pypi.org/simple/ ocarina==0.2.1
+          pip install --index-url https://test.pypi.org/simple/ ocarina==0.2.5
           python -u ./src/main.py --driver-path ./geckodriver --browser firefox --workers 3
 
       - name: Sync and enumerate traces

@@ -7,7 +7,7 @@ from tests.scenarios.dashboard.access.happy_paths import (
     test_dashboard_login_with_otp_happy_path,
     test_dashboard_login_without_otp_happy_path,
 )
-from tests.scenarios.dashboard.misc import (
+from tests.scenarios.dashboard.back_to_igoristan import (
     test_dashboard_login_page_back_to_igoristan_button,
 )
 
