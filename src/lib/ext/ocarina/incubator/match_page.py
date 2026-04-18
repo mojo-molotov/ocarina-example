@@ -31,6 +31,7 @@ Example:
     ...         match_page(
     ...             when(
     ...                 lambda: page.has_cookie_banner(),
+    ...                 name="has_cookie_banner",
     ...                 then=[
     ...                     drive_page(
     ...                         act(page, dismiss_banner)
@@ -41,6 +42,7 @@ Example:
     ...             ),
     ...             when(
     ...                 lambda: not page.has_cookie_banner(),
+    ...                 name="has_not_cookie_banner",
     ...                 then=[
     ...                     drive_page(
     ...                         act(page, verify_page)
@@ -88,17 +90,20 @@ class _When:
 
     Attributes:
         condition: A thunk returning True if this branch should execute.
+        name: Name of the branch (logging purposes).
         runners: ChainRunners to execute sequentially if condition is True.
 
     """
 
     condition: Thunk[bool]
+    name: str
     runners: Sequence[ChainRunner[Any]]
 
 
 def when(
     condition: Thunk[bool],
     *,
+    name: str = "",
     then: Sequence[ChainRunner[Any]],
 ) -> _When:
     """Declare a conditional branch for match_page().
@@ -106,6 +111,7 @@ def when(
     Args:
         condition: A thunk (() -> bool) evaluated to decide if this branch runs.
                    Should not raise — exceptions are treated as False.
+        name: Name of the branch (logging purposes).
         then: ChainRunners to execute sequentially if condition returns True.
               Accepts drive_page() calls or any other ChainRunner.
 
@@ -115,6 +121,7 @@ def when(
     Example:
         >>> when(
         ...     lambda: page.has_cookie_banner(),
+        ...     name="has_cookie_banner",
         ...     then=[
         ...         drive_page(
         ...             act(page, dismiss_banner)
@@ -125,7 +132,7 @@ def when(
         ... )
 
     """
-    return _When(condition=condition, runners=then)
+    return _When(condition=condition, name=name, runners=then)
 
 
 def _run_branch(runners: Sequence[ChainRunner[Any]]) -> ActionChain[Any]:
@@ -201,26 +208,33 @@ def create_match_page(
             ... )
             >>>
             >>> runner = match_page(
-            ...     when(lambda: page.is_in_state_a(), then=[drive_page(...)]),
-            ...     when(lambda: page.is_in_state_b(), then=[drive_page(...)]),
+            ...     when(lambda: page.is_in_state_a(), name="a", then=[drive_page(...)]),
+            ...     when(lambda: page.is_in_state_b(), name="b", then=[drive_page(...)]),
             ... )
 
         """
 
         def thunk() -> ActionChain[Any]:
-            for branch in branches:
+            for index, branch in enumerate(branches):
+                label = branch.name or f"branch[{index}]"
+
                 try:
                     matched = branch.condition()
+                    msg = f"match_page: '{label}' -> {matched}"
+                    logger.debug(msg)
 
                 except raised_exceptions as exc:
-                    logger.exception("Raising exception:", exc=exc)  # type: ignore[arg-type]
+                    logger.exception("match_page: raising exception...", exc=exc)  # type: ignore[arg-type]
                     raise
 
                 except Exception as exc:
-                    logger.exception("Branch mismatch:", exc=exc)
+                    msg = f"match_page: '{label}' raised"
+                    logger.exception(msg, exc=exc)
                     matched = False
 
                 if matched:
+                    msg = f"match_page: '{label}' matched."
+                    logger.info(msg)
                     return _run_branch(branch.runners)
 
             return ActionChain(

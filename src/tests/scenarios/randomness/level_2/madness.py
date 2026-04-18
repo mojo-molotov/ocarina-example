@@ -59,6 +59,7 @@ def madness_page_render(
             logger,
             when(
                 check_that.is_cors_page,
+                name="is_cors_page",
                 then=[
                     drive_page(
                         act(on_cors_page, verify_cors_page)
@@ -73,6 +74,7 @@ def madness_page_render(
             ),
             when(
                 check_that.is_bastia_page,
+                name="is_bastia_page",
                 then=[
                     drive_page(
                         act(on_this_is_bastia_page, verify_this_is_bastia_page)
