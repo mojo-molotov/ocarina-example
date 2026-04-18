@@ -1,10 +1,7 @@
-[tool.pip]
-extra-index-url = ["https://test.pypi.org/simple/"]
-
 [project]
-name = "ocarina-dev"
+name = "ocarina-example"
 version = "0.0.0"
-description = "Websites test framework for Selenium and humans"
+description = "Toy project using Ocarina"
 requires-python = ">=3.14"
 dependencies = [
     "python-docx>=1.2.0",
