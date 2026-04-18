@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
+from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 
 from lib.connectors.test_steps.actions.madness_page import (
     open_cors_page_url,
@@ -56,7 +57,7 @@ def madness_page_render(
             .success(just_log_success("Opened the madness page!")),
         ),
         match_page(
-            logger,
+            create_matching_logger("terminal"),
             when(
                 check_that.is_cors_page,
                 name="is_cors_page",

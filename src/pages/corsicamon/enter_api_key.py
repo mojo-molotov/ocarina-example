@@ -9,8 +9,6 @@ from ocarina.dsl.invariants.assertions import (
     is_positive,
 )
 from ocarina.dsl.invariants.validate import validate
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -101,17 +99,13 @@ class CorsicamonEnterApiKeyPage(SeleniumTitleMixin, POMBase):
                 timeout=timeout,
             )
 
-            needle = "Corsicamon"
-            expected_h1 = "Enter API Key"
+            WebDriverWait(self._driver, timeout).until(ec.title_contains("Corsicamon"))
 
-            WebDriverWait(self._driver, timeout).until(ec.title_contains(needle))
-
-            h1 = WebDriverWait(self._driver, timeout).until(
-                ec.presence_of_element_located((By.TAG_NAME, "h1"))
-            )
-
-            assert h1.text.lower() == expected_h1.lower(), (
-                f"Unexpected h1 text: '{h1.text}'"
+            WebDriverWait(self._driver, timeout).until(
+                ec.text_to_be_present_in_element(
+                    (By.TAG_NAME, "h1"),
+                    "Enter API Key",
+                )
             )
         except Exception as exc:
             raise PageVerificationError from exc

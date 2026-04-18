@@ -21,12 +21,12 @@ def create_e2e_test_cycle(drivers_pool: SeleniumWebDriversPool):
     return TestCycle(
         name="e2e",
         campaigns=[
-            # create_igoristan_login_campaign(drivers_pool=drivers_pool),
+            create_igoristan_login_campaign(drivers_pool=drivers_pool),
             create_igoristan_randomness_campaign(drivers_pool=drivers_pool),
-            # create_igoristan_sacred_upload_campaign(drivers_pool=drivers_pool),
-            # create_igoristan_corsicamon_campaign(drivers_pool=drivers_pool),
+            create_igoristan_sacred_upload_campaign(drivers_pool=drivers_pool),
+            create_igoristan_corsicamon_campaign(drivers_pool=drivers_pool),
         ],
         smoke_tests_campaigns=[
-            # create_igoristan_corsicamon_smoke_campaign(drivers_pool=drivers_pool),
+            create_igoristan_corsicamon_smoke_campaign(drivers_pool=drivers_pool),
         ],
     )

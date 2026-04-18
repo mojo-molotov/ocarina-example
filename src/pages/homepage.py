@@ -3,8 +3,6 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -38,16 +36,13 @@ class Homepage(SeleniumTitleMixin, POMBase):
             if timeout is None:
                 timeout = get_timeout()
 
-            expected_title = "Igoristan"
+            WebDriverWait(self._driver, timeout).until(ec.title_is("Igoristan"))
 
-            WebDriverWait(self._driver, timeout).until(ec.title_is(expected_title))
-
-            h1 = WebDriverWait(self._driver, timeout).until(
-                ec.presence_of_element_located((By.TAG_NAME, "h1"))
-            )
-
-            assert h1.text.lower() == expected_title.lower(), (
-                f"Unexpected h1 text: '{h1.text}'"
+            WebDriverWait(self._driver, timeout).until(
+                ec.text_to_be_present_in_element(
+                    (By.TAG_NAME, "h1"),
+                    "Igoristan",
+                )
             )
         except Exception as exc:
             raise PageVerificationError from exc

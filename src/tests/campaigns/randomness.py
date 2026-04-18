@@ -19,7 +19,7 @@ def create_igoristan_randomness_campaign(
     return TestCampaign(
         name="Random pages",
         suites=[
-            # create_igoristan_randomness_level_1_test_suite(drivers_pool=drivers_pool),
+            create_igoristan_randomness_level_1_test_suite(drivers_pool=drivers_pool),
             create_igoristan_randomness_level_2_test_suite(drivers_pool=drivers_pool),
         ],
     )

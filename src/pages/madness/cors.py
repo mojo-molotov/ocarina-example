@@ -3,8 +3,6 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
-
-# ruff: noqa: S101
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
 from selenium.webdriver.common.by import By
@@ -38,18 +36,15 @@ class CorsPage(SeleniumTitleMixin, POMBase):
             if timeout is None:
                 timeout = get_timeout()
 
-            expected_h1_needle = "CORS Errors:"
-            title_needle = "Madness"
+            def _h1_contains_cors_errors(driver: WebDriver) -> bool:
+                try:
+                    h1 = driver.find_element(By.TAG_NAME, "h1")
+                    return "cors errors:" in h1.text.lower()
+                except Exception:  # noqa: BLE001
+                    return False
 
-            WebDriverWait(self._driver, timeout).until(ec.title_contains(title_needle))
-
-            h1 = WebDriverWait(self._driver, timeout).until(
-                ec.presence_of_element_located((By.TAG_NAME, "h1"))
-            )
-
-            assert expected_h1_needle.lower() in h1.text.lower(), (
-                f"Unexpected h1 text: '{h1.text}'"
-            )
+            WebDriverWait(self._driver, timeout).until(ec.title_contains("Madness"))
+            WebDriverWait(self._driver, timeout).until(_h1_contains_cors_errors)
         except Exception as exc:
             raise PageVerificationError from exc
 

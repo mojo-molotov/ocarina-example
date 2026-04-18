@@ -68,7 +68,7 @@ from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
 from ocarina.dsl.testing_with_railway.internals.action_chain import ActionChain
 from ocarina.railway.result import Fail, Ok
 
-from constants.sys.transient_errors import match_page_transient_errors
+from constants.sys.transient_errors import transient_errors
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -208,8 +208,8 @@ def create_match_page(
             ... )
             >>>
             >>> runner = match_page(
-            ...     when(lambda: page.is_in_state_a(), name="a", then=[drive_page(...)]),
-            ...     when(lambda: page.is_in_state_b(), name="b", then=[drive_page(...)]),
+            ...     when(lambda: page.is_in_a(), name="s_a", then=[drive_page(...)]),
+            ...     when(lambda: page.is_in_b(), name="s_b", then=[drive_page(...)]),
             ... )
 
         """
@@ -254,6 +254,6 @@ def create_match_page(
 # * ... Future user-land
 def match_page(logger: ILogger, *branches: _When):
     """Match page operator."""
-    return create_match_page(raised_exceptions=match_page_transient_errors)(
+    return create_match_page(raised_exceptions=transient_errors)(
         logger=logger, branches=branches
     )

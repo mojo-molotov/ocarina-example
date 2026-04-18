@@ -14,10 +14,3 @@ transient_errors = (
     DriverDiedError,
     TransientError,
 )
-
-
-_match_page_transient_errors_to_remove = {PageVerificationError}
-
-match_page_transient_errors = tuple(
-    e for e in transient_errors if e not in _match_page_transient_errors_to_remove
-)
