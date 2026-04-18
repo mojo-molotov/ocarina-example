@@ -57,37 +57,41 @@ def madness_page_render(
             .success(just_log_success("Opened the madness page!")),
         ),
         match_page(
-            create_matching_logger("terminal"),
-            when(
-                check_that.is_cors_page,
-                name="is_cors_page",
-                then=[
-                    drive_page(
-                        act(on_cors_page, verify_cors_page)
-                        .failure(log_error_with_current_url("Test KO - CORS"))
-                        .success(
-                            log_success_with_current_url_and_take_screenshot(
-                                "Test OK - CORS"
+            branches=[
+                when(
+                    check_that.is_cors_page,
+                    name="is_cors_page",
+                    then=[
+                        drive_page(
+                            act(on_cors_page, verify_cors_page)
+                            .failure(log_error_with_current_url("Test KO - CORS"))
+                            .success(
+                                log_success_with_current_url_and_take_screenshot(
+                                    "Test OK - CORS"
+                                )
                             )
                         )
-                    )
-                ],
-            ),
-            when(
-                check_that.is_bastia_page,
-                name="is_bastia_page",
-                then=[
-                    drive_page(
-                        act(on_this_is_bastia_page, verify_this_is_bastia_page)
-                        .failure(log_error_with_current_url("Test KO - THIS IS BASTIA"))
-                        .success(
-                            log_success_with_current_url_and_take_screenshot(
-                                "Test OK - THIS IS BASTIA"
+                    ],
+                ),
+                when(
+                    check_that.is_bastia_page,
+                    name="is_bastia_page",
+                    then=[
+                        drive_page(
+                            act(on_this_is_bastia_page, verify_this_is_bastia_page)
+                            .failure(
+                                log_error_with_current_url("Test KO - THIS IS BASTIA")
+                            )
+                            .success(
+                                log_success_with_current_url_and_take_screenshot(
+                                    "Test OK - THIS IS BASTIA"
+                                )
                             )
                         )
-                    )
-                ],
-            ),
+                    ],
+                ),
+            ],
+            logger=create_matching_logger("terminal"),
         ),
     ]
 

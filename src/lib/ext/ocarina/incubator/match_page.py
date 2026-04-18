@@ -66,6 +66,7 @@ from typing import TYPE_CHECKING, Any, final
 
 from ocarina.dsl.testing_with_railway.chain_actions import ChainRunner
 from ocarina.dsl.testing_with_railway.internals.action_chain import ActionChain
+from ocarina.opinionated.loggers.muted_logger import MutedLogger
 from ocarina.railway.result import Fail, Ok
 
 from constants.sys.transient_errors import transient_errors
@@ -159,11 +160,11 @@ def _run_branch(runners: Sequence[ChainRunner[Any]]) -> ActionChain[Any]:
     return last
 
 
-def create_match_page(
+def _match_page_builder(  # noqa: ANN202
     *,
     raised_exceptions: tuple[type[BaseException], ...] = (),
 ):
-    """Create a match_page function with exception policy.
+    """Build a match_page function with exception policy.
 
     Args:
         raised_exceptions:
@@ -172,11 +173,11 @@ def create_match_page(
             a failed condition (i.e. equivalent to False).
 
     Returns:
-        A match_page(*branches) function.
+        A match_page function.
 
     """
 
-    def match_page(logger: ILogger, branches: Sequence[_When]) -> ChainRunner[Any]:
+    def _match_page(logger: ILogger, branches: Sequence[_When]) -> ChainRunner[Any]:
         """Conditional branching operator for adaptive pages.
 
         Evaluates each when() condition in declaration order.
@@ -214,7 +215,7 @@ def create_match_page(
 
         """
 
-        def thunk() -> ActionChain[Any]:
+        def _thunk() -> ActionChain[Any]:
             for index, branch in enumerate(branches):
                 label = branch.name or f"branch[{index}]"
 
@@ -246,14 +247,41 @@ def create_match_page(
                 ),
             )
 
-        return ChainRunner(thunk=thunk)
+        return ChainRunner(thunk=_thunk)
 
-    return match_page
+    return _match_page
+
+
+def create_match_page(
+    *,
+    raised_exceptions: tuple[type[Exception], ...] = transient_errors,
+):
+    """Create a full-featured match_page function with exception and logging policy.
+
+    Args:
+        raised_exceptions:
+            Tuple of exception classes that MUST be re-raised during
+            condition evaluation. All other exceptions are treated as
+            a failed condition (i.e. equivalent to False).
+
+    Returns:
+        A match_page function, injecting logger automatically.
+
+    """
+
+    def _match_page(  # noqa: ANN202
+        *,
+        logger: ILogger | None = None,
+        branches: Sequence[_When],
+    ):
+        _logger = MutedLogger() if logger is None else logger
+        return _match_page_builder(raised_exceptions=raised_exceptions)(
+            logger=_logger,
+            branches=branches,
+        )
+
+    return _match_page
 
 
 # * ... Future user-land
-def match_page(logger: ILogger, *branches: _When):
-    """Match page operator."""
-    return create_match_page(raised_exceptions=transient_errors)(
-        logger=logger, branches=branches
-    )
+match_page = create_match_page(raised_exceptions=transient_errors)

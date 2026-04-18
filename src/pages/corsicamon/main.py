@@ -206,7 +206,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
 
         return self
 
-    def enter_fresh_corsicamon_id(self) -> CorsicamonPage:
+    def enter_fresh_corsicamon_id(self, *, skip_check: bool = False) -> CorsicamonPage:
         """Enter fresh id, then check the presence of an error message."""
         timeout = get_timeout()
 
@@ -239,9 +239,11 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
             self._get_random_add_corsicamon_dispatchers_key()
         ]()
 
-        WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._draw_complete_msg)
-        )
+        if not skip_check:
+            timeout = 20  # Hard-coded since loaders are slow here.
+            WebDriverWait(self._driver, timeout).until(
+                ec.visibility_of_element_located(self._draw_complete_msg)
+            )
 
         return self
 
@@ -255,7 +257,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
 
         attempts_count = 1
         while attempts_count <= retries:
-            self.enter_fresh_corsicamon_id()
+            self.enter_fresh_corsicamon_id(skip_check=True)
             timeout = get_timeout()
             with suppress(Exception):
                 WebDriverWait(self._driver, timeout).until(
