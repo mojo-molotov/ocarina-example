@@ -28,7 +28,6 @@ def act(pom: TPOM, action: Callable[[TPOM], TPOM]) -> ActionStart[TPOM]:
                 http_error = HttpErrorPageReachedError(f"HTTP error page: {title}")
                 http_error.__cause__ = exc
                 return Fail(error=http_error)
-            return Fail(error=exc)
         return Fail(error=exc)
 
     return create_act(
