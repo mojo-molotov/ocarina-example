@@ -4,9 +4,16 @@ from typing import TYPE_CHECKING
 
 from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
+from ocarina.dsl.testing.selenium.create_watcher import (
+    SeleniumWatcher,
+    create_selenium_watcher,
+)
 from ocarina.dsl.testing_with_railway.match_page import when
 from ocarina.opinionated.dsl.drive_page import drive_page
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 
 from lib.connectors.test_steps.actions.madness_page import (
     open_madness_page,
@@ -95,9 +102,31 @@ def madness_page_render(driver: WebDriver, logger: ILogger):
     ]
 
 
+def watch_fig_28(watcher: SeleniumWatcher) -> None:
+    """Detect any element with CSS class 'mx-auto' on the current page."""
+    elements = WebDriverWait(watcher.driver, 0.350).until(
+        ec.visibility_of_all_elements_located((By.CSS_SELECTOR, ".mx-auto"))
+    )
+
+    for el in elements:
+        fingerprint = f"{el.tag_name}:{el.text.strip()}"
+        if fingerprint in watcher.cache:
+            continue
+        watcher.cache.add(fingerprint)
+        watcher.report(
+            f"mx-auto element detected: <{el.tag_name}> {el.text.strip()!r}",
+            label="MX_AUTO",
+        )
+
+
 test_madness_page_render = create_selenium_test(
     name="Madness page render",
     test_scenario=lambda driver, logger: Scenario(
-        test_chain=madness_page_render(driver, logger)
+        test_chain=madness_page_render(driver, logger),
+        watchers=[
+            create_selenium_watcher(
+                callback=watch_fig_28, name="mx-auto", poll_interval=0.8
+            ),
+        ],
     ),
 )
