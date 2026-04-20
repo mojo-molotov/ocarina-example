@@ -1,6 +1,6 @@
 MAKEFLAGS += --silent
 
-PY_CMD ?= py
+PY_CMD ?= python
 VENV_BIN ?= .venv/bin
 VENV_PYTHON ?= $(VENV_BIN)/python
 VENV_PIP ?= $(VENV_BIN)/pip
@@ -19,7 +19,7 @@ mypy-check:
 
 .PHONY: install-on-ci
 install-on-ci:
-	@test -d .venv || python -m venv .venv
+	@test -d .venv || $(PY_CMD) -m venv .venv
 	$(VENV_PYTHON) -m pip install --upgrade pip
 	$(VENV_PIP) install -e . --group dev
 

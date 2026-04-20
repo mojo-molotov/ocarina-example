@@ -62,7 +62,8 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        run: make install-on-ci
+        run: |
+          make install-on-ci
 
       - name: Verify venv (fallback install)
         run: |
