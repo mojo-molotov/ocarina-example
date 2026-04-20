@@ -35,27 +35,27 @@ if TYPE_CHECKING:
     from ocarina.custom_types.oc_test_layers import TestCycleResults
 
 if __name__ == "__main__":
+    CliStoreSingleton().push(create_selenium_auto_cli_store())
+
+    drivers_pool = create_selenium_drivers_pool(
+        browser=CliStoreSingleton().get("browser"),
+        driver_path=CliStoreSingleton().get("driver_path"),
+        headless=CliStoreSingleton().get("headless"),
+        wait_timeout=CliStoreSingleton().get("wait_timeout"),
+        max_size=CliStoreSingleton().get("workers"),
+    )
+
+    logger = create_matching_logger(CliStoreSingleton().get("logger"))
+
+    logger.info("Warming up the Redis client...")
+    warmup_redis_client()
+    logger.success("Redis client initialized!")
+
+    def _post_exec(results: TestCycleResults) -> None:
+        print()  # noqa: T201
+        pretty_print_results(results, with_colors=True)
+
     with timing(prefix="Tests duration:"):
-        CliStoreSingleton().push(create_selenium_auto_cli_store())
-
-        drivers_pool = create_selenium_drivers_pool(
-            browser=CliStoreSingleton().get("browser"),
-            driver_path=CliStoreSingleton().get("driver_path"),
-            headless=CliStoreSingleton().get("headless"),
-            wait_timeout=CliStoreSingleton().get("wait_timeout"),
-            max_size=CliStoreSingleton().get("workers"),
-        )
-
-        logger = create_matching_logger(CliStoreSingleton().get("logger"))
-
-        logger.info("Warming up the Redis client...")
-        warmup_redis_client()
-        logger.success("Redis client initialized!")
-
-        def _post_exec(results: TestCycleResults) -> None:
-            print()  # noqa: T201
-            pretty_print_results(results, with_colors=True)
-
         bootstrap(
             post_exec=_post_exec,
             test_cycle=create_e2e_test_cycle(drivers_pool),

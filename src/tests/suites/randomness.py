@@ -3,7 +3,6 @@
 from typing import TYPE_CHECKING
 
 from lib.ext.ocarina.adapters.selenium.test_suite import TestSuite
-from tests.scenarios.chaotic_form.send_it import test_send_chaotic_form
 from tests.scenarios.randomness.level_1.random_error_page import (
     test_random_error_page_render,
 )
@@ -11,6 +10,9 @@ from tests.scenarios.randomness.level_1.random_loaders_page import (
     test_random_loaders_page_full_load_and_back_to_homepage,
 )
 from tests.scenarios.randomness.level_2.madness import test_madness_page_render
+from tests.scenarios.randomness.level_3.chaotic_form.send_it import (
+    test_send_chaotic_form,
+)
 
 if TYPE_CHECKING:
     from ocarina.custom_types.selenium.web_drivers_pool import SeleniumWebDriversPool
