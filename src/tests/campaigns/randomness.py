@@ -6,6 +6,7 @@ from lib.ext.ocarina.adapters.selenium.test_campaign import TestCampaign
 from tests.suites.randomness import (
     create_igoristan_randomness_level_1_test_suite,
     create_igoristan_randomness_level_2_test_suite,
+    create_igoristan_randomness_level_3_test_suite,
 )
 
 if TYPE_CHECKING:
@@ -21,5 +22,6 @@ def create_igoristan_randomness_campaign(
         suites=[
             create_igoristan_randomness_level_1_test_suite(drivers_pool=drivers_pool),
             create_igoristan_randomness_level_2_test_suite(drivers_pool=drivers_pool),
+            create_igoristan_randomness_level_3_test_suite(drivers_pool=drivers_pool),
         ],
     )
