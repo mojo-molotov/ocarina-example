@@ -2,4 +2,4 @@
 
 from typing import Final
 
-HOMEPAGE_URL: Final[str] = "https://mojo-molotov.github.io"
+HOMEPAGE_URL: Final[str] = "https://mojo-molotov.github.io/igoristan"

@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING
 
 from lib.ext.ocarina.adapters.selenium.test_suite import TestSuite
+from tests.scenarios.chaotic_form.send_it import test_send_chaotic_form
 from tests.scenarios.randomness.level_1.random_error_page import (
     test_random_error_page_render,
 )
@@ -39,6 +40,20 @@ def create_igoristan_randomness_level_2_test_suite(
         name="Level 2",
         tests=[
             test_madness_page_render,
+        ],
+        drivers_pool=drivers_pool,
+    )
+
+
+def create_igoristan_randomness_level_3_test_suite(
+    *,
+    drivers_pool: SeleniumWebDriversPool,
+) -> TestSuite:
+    """Create the Igoristan's random features test suite (lvl3)."""
+    return TestSuite(
+        name="Level 3",
+        tests=[
+            test_send_chaotic_form,
         ],
         drivers_pool=drivers_pool,
     )

@@ -98,6 +98,6 @@ def madness_page_render(driver: WebDriver, logger: ILogger):
 test_madness_page_render = create_selenium_test(
     name="Madness page render",
     test_scenario=lambda driver, logger: Scenario(
-        test_chain=madness_page_render(driver, logger)
+        test_chain=madness_page_render(driver, logger),
     ),
 )
