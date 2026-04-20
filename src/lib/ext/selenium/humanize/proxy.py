@@ -65,8 +65,7 @@ class _HumanizedWebElement(WebElement):
         the signature of the native Selenium send_keys.
 
         Args:
-            *value: One or more values to type. Non-string values are cast
-                    to str before joining.
+            *value: One or more values.
 
         """
         for v in value:
