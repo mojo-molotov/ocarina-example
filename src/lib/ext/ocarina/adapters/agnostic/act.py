@@ -4,7 +4,6 @@ from contextlib import suppress
 from typing import TYPE_CHECKING
 
 from ocarina.dsl.testing_with_railway.constructors.create_act import create_act
-from ocarina.opinionated.infra.act_counter import ActCounter
 from ocarina.railway.result import Fail
 
 from lib.custom_errors.http import HttpErrorPageReachedError
@@ -34,5 +33,4 @@ def act(pom: TPOM, action: Callable[[TPOM], TPOM]) -> ActionStart[TPOM]:
         pom,
         action,
         on_failure=failure_hook,
-        on_run_effect=lambda: ActCounter().incr_act_call_count(),
     )

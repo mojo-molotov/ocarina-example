@@ -3,7 +3,6 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.dsl.testing.oc_test_suite import TestSuite as OriginalTestSuite
-from ocarina.opinionated.infra.act_counter import ActCounter
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -53,7 +52,6 @@ class TestSuite(OriginalTestSuite[WebDriver]):
             copy_indicator=copy_indicator,
             put_space_after_copy_indicator=put_space_after_copy_indicator,
             autoscreen_on_fail=autoscreen_on_fail,
-            act_counter=ActCounter(),
             take_screenshot=take_screenshot_unstrict,
             transient_errors=transient_errors,
             saturate_workers=saturate_workers,
