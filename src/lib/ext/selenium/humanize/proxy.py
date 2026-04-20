@@ -23,7 +23,7 @@ not explicitly overridden to the underlying Selenium object, so the full
 Selenium API remains available without any extra boilerplate.
 """
 
-from typing import TYPE_CHECKING, Unpack
+from typing import TYPE_CHECKING, Any, Unpack
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -58,7 +58,7 @@ class _HumanizedWebElement(WebElement):
         self._element = element
         self._config = keyboard_config
 
-    def send_keys(self, *value: str) -> None:
+    def send_keys(self, *value: Any) -> None:  # noqa: ANN401
         """Type into the element using humanized_send_keys.
 
         All positional arguments are joined into a single string, matching
@@ -69,8 +69,11 @@ class _HumanizedWebElement(WebElement):
                     to str before joining.
 
         """
-        text = "".join(str(v) for v in value)
-        humanized_send_keys_with_config(self._element, text, self._config)
+        for v in value:
+            if isinstance(v, str):
+                humanized_send_keys_with_config(self._element, v, self._config)
+            else:
+                self._element.send_keys(v)
 
     def __getattr__(self, name: str):  # noqa: ANN204
         """Delegate any unrecognized attribute to the underlying WebElement.
