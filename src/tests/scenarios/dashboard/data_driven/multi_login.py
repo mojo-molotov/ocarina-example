@@ -1,6 +1,5 @@
 """Login using a dataset."""
 
-from types import MappingProxyType
 from typing import TYPE_CHECKING
 
 from ocarina.custom_types.scenario import Scenario
@@ -25,14 +24,14 @@ from lib.ext.ocarina.adapters.selenium.logs import (
 )
 from pages.dashboard.login import DashboardLoginPage
 from pages.dashboard.welcome_page import DashboardWelcomePage
+from tests.scenarios.dashboard.data_driven.datasets.multi_login import (
+    multi_login_dataset,
+)
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
     from ocarina.custom_types.selenium.oc_test_scenario import SeleniumTestScenario
     from ocarina.opinionated.infra.env import (
         ImmutableCredentials,
-        ImmutableCredentialsKeys,
     )
     from ocarina.ports.ilogger import ILogger
     from selenium.webdriver.remote.webdriver import WebDriver
@@ -117,43 +116,10 @@ def _create_login_scenario(credentials: ImmutableCredentials) -> SeleniumTestSce
     return _scenario
 
 
-_dataset: Sequence[MappingProxyType[ImmutableCredentialsKeys, str]] = [
-    MappingProxyType(
-        {
-            "login": "any",
-            "password": "figatellu",
-        }
-    ),
-    MappingProxyType(
-        {
-            "login": "Napoleon",
-            "password": "figatellu",
-        }
-    ),
-    MappingProxyType(
-        {
-            "login": "NoSicilianAllowed",
-            "password": "figatellu",
-        }
-    ),
-    MappingProxyType(
-        {
-            "login": "anonymous",
-            "password": "figatellu",
-        }
-    ),
-    MappingProxyType(
-        {
-            "login": "TheEmpire",
-            "password": "figatellu",
-        }
-    ),
-]
-
 multi_login_tests = [
     create_selenium_test(
         name=f"Login — {creds['login']}",
         test_scenario=_create_login_scenario(creds),
     )
-    for creds in _dataset
+    for creds in multi_login_dataset
 ]
