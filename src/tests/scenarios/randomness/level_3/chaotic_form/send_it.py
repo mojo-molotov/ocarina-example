@@ -16,6 +16,7 @@ from lib.connectors.test_steps.actions.chaotic_form import (
 from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.selenium.logs import (
     create_just_log_error,
+    create_just_log_success,
     create_log_success_with_current_url_and_take_screenshot,
 )
 from lib.ext.selenium.humanize.proxy import HumanizedDriver
@@ -33,6 +34,7 @@ def _send_chaotic_form(driver: WebDriver, logger: ILogger):  # noqa: ANN202
     """Send the chaotic form (full path)."""
     on_chaotic_form_page = ChaoticFormPage(driver=driver)
 
+    just_log_success = create_just_log_success(logger=logger)
     just_log_error = create_just_log_error(logger=logger)
     log_success_with_current_url_and_take_screenshot = (
         create_log_success_with_current_url_and_take_screenshot(
@@ -48,11 +50,7 @@ def _send_chaotic_form(driver: WebDriver, logger: ILogger):  # noqa: ANN202
                     "Failed to open the chaotic form page...",
                 )
             )
-            .success(
-                log_success_with_current_url_and_take_screenshot(
-                    "Opened the chaotic form page!"
-                )
-            ),
+            .success(just_log_success("Opened the chaotic form page!")),
             act(on_chaotic_form_page, verify_chaotic_form_page)
             .failure(
                 just_log_error(
