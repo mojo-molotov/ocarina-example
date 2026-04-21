@@ -9,6 +9,9 @@ from tests.suites.dashboard.access.happy_paths import (
 from tests.suites.dashboard.access.unhappy_paths import (
     create_igoristan_login_unhappy_paths_test_suite,
 )
+from tests.suites.dashboard.data_driven.multi_login import (
+    create_igoristan_login_data_driven_test_suite,
+)
 
 if TYPE_CHECKING:
     from ocarina.custom_types.selenium.web_drivers_pool import SeleniumWebDriversPool
@@ -23,5 +26,6 @@ def create_igoristan_login_campaign(
         suites=[
             create_igoristan_login_happy_paths_test_suite(drivers_pool=drivers_pool),
             create_igoristan_login_unhappy_paths_test_suite(drivers_pool=drivers_pool),
+            create_igoristan_login_data_driven_test_suite(drivers_pool=drivers_pool),
         ],
     )
