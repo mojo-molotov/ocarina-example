@@ -8,9 +8,11 @@ from ocarina.dsl.testing_with_railway.match_page import when
 from ocarina.opinionated.dsl.drive_page import drive_page
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 
-from lib.connectors.test_steps.actions.madness_page import (
+from lib.connectors.test_steps.actions.cors_errors import verify_cors_page
+from lib.connectors.test_steps.actions.madness import (
     open_madness_page,
-    verify_cors_page,
+)
+from lib.connectors.test_steps.actions.this_is_bastia import (
     verify_this_is_bastia_page,
 )
 from lib.ext.ocarina.adapters.agnostic.act import act

@@ -70,7 +70,7 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             By.CSS_SELECTOR,
             '[data-testid="images-dropzone-error-msg"]',
         )
-        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+        self._back_to_igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
 
     @staticmethod
     def _delete_img_btn(idx: int) -> tuple[ByType, str]:
@@ -216,11 +216,10 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
         """Click on the back to Igoristan link."""
         timeout = get_timeout()
         WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._igoristan_link)
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
         ).click()
 
         WebDriverWait(self._driver, timeout).until(
-            ec.invisibility_of_element_located(self._igoristan_link)
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
         )
-
         return self

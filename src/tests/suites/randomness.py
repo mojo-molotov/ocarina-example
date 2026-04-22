@@ -14,6 +14,7 @@ from tests.scenarios.randomness.level_2.madness import test_madness_page_render
 from tests.scenarios.randomness.level_3.chaotic_form import (
     test_send_chaotic_form,
 )
+from tests.scenarios.randomness.level_4.walkthrough import test_traverse_random_pages
 
 if TYPE_CHECKING:
     from ocarina.custom_types.selenium.web_drivers_pool import SeleniumWebDriversPool
@@ -58,6 +59,20 @@ def create_igoristan_randomness_level_3_test_suite(
         name="Level 3",
         tests=[
             test_send_chaotic_form,
+        ],
+        drivers_pool=drivers_pool,
+    )
+
+
+def create_igoristan_randomness_level_4_test_suite(
+    *,
+    drivers_pool: SeleniumWebDriversPool,
+) -> TestSuite:
+    """Create the Igoristan's random features test suite (lvl4)."""
+    return TestSuite(
+        name="Level 4",
+        tests=[
+            test_traverse_random_pages,
         ],
         drivers_pool=drivers_pool,
     )

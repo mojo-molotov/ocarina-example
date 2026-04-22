@@ -22,6 +22,10 @@ class ThisIsBastiaPage(SeleniumTitleMixin, POMBase):
     def __init__(self, *, driver: WebDriver) -> None:
         """Initialize POM."""
         self._driver = driver
+        self._invader_detector_btn = (
+            By.CSS_SELECTOR,
+            'a[href="/igoristan/donkey-sausage-eater-detector"]',
+        )
 
     def verify(self, *, timeout: float | None = None) -> ThisIsBastiaPage:
         """Verify function."""
@@ -41,4 +45,12 @@ class ThisIsBastiaPage(SeleniumTitleMixin, POMBase):
         except Exception as exc:
             raise PageVerificationError from exc
 
+        return self
+
+    def click_invader_detector_btn(self) -> ThisIsBastiaPage:
+        """Click on invader detector btn."""
+        timeout = get_timeout()
+        WebDriverWait(self._driver, timeout).until(
+            ec.visibility_of_element_located(self._invader_detector_btn)
+        ).click()
         return self

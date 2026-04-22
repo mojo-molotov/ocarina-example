@@ -84,7 +84,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
             By.CSS_SELECTOR,
             '[data-testid="login-btn"]',
         )
-        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+        self._back_to_igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
 
         self._confirm_otp_btn_on_otp_screen = (
             By.CSS_SELECTOR,
@@ -192,7 +192,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
                     "Password input": self._password_input,
                     "OTP checkbox": self._use_otp_checkbox,
                     "Login button": self._login_btn,
-                    "Back to Igoristan link": self._igoristan_link,
+                    "Back to Igoristan link": self._back_to_igoristan_link,
                 },
                 page_title=_PAGE_TITLE,
                 timeout=timeout,
@@ -215,11 +215,11 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
         """Click on the back to Igoristan link."""
         timeout = get_timeout()
         WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._igoristan_link)
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
         ).click()
 
         WebDriverWait(self._driver, timeout).until(
-            ec.invisibility_of_element_located(self._igoristan_link)
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
         )
 
         return self

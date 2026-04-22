@@ -35,7 +35,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         self._URL = url
         self._driver = driver
 
-        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+        self._back_to_igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
         self._new_draw_btn = (
             By.CSS_SELECTOR,
             '[data-testid="new-draw-btn"]',
@@ -124,7 +124,7 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
                 driver=self._driver,
                 selectors={
                     "New draw button": self._new_draw_btn,
-                    "Back to Igoristan link": self._igoristan_link,
+                    "Back to Igoristan link": self._back_to_igoristan_link,
                     "Add Corsicamon button": self._add_corsicamon_btn,
                     "Enter Corsicamon ID button": self._enter_id_input,
                     "First Corsicamon card": self._corsicamon_card_id(1),
@@ -147,11 +147,11 @@ class CorsicamonPage(SeleniumTitleMixin, POMBase):
         """Click on the back to Igoristan link."""
         timeout = get_timeout()
         WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._igoristan_link)
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
         ).click()
 
         WebDriverWait(self._driver, timeout).until(
-            ec.invisibility_of_element_located(self._igoristan_link)
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
         )
 
         return self

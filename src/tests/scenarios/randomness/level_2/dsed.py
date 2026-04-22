@@ -8,11 +8,11 @@ from ocarina.dsl.testing_with_railway.match_page import when
 from ocarina.opinionated.dsl.drive_page import drive_page
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 
+from lib.connectors.test_steps.actions.bsod import verify_bsod_page
 from lib.connectors.test_steps.actions.dsed import (
     open_dsed_page,
-    verify_bsod_page,
-    verify_ids_bypassed_page,
 )
+from lib.connectors.test_steps.actions.ids_bypassed import verify_ids_bypassed_page
 from lib.ext.ocarina.adapters.agnostic.act import act
 from lib.ext.ocarina.adapters.agnostic.match_page import match_page
 from lib.ext.ocarina.adapters.selenium.logs import (

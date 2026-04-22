@@ -99,7 +99,7 @@ class RandomLoadersPage(SeleniumTitleMixin, POMBase):
             self._random_loaders_elements_class,
         )
 
-        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+        self._back_to_igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
 
     def open(self) -> RandomLoadersPage:
         """Open the page."""
@@ -116,7 +116,7 @@ class RandomLoadersPage(SeleniumTitleMixin, POMBase):
                 driver=self._driver,
                 selectors={
                     "Random loaders container": self._random_loaders_container,
-                    "Back to Igoristan link": self._igoristan_link,
+                    "Back to Igoristan link": self._back_to_igoristan_link,
                 },
                 page_title="the Igoristan random loaders page",
                 timeout=timeout,
@@ -156,11 +156,11 @@ class RandomLoadersPage(SeleniumTitleMixin, POMBase):
         """Click on the back to Igoristan link."""
         timeout = get_timeout()
         WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._igoristan_link)
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
         ).click()
 
         WebDriverWait(self._driver, timeout).until(
-            ec.invisibility_of_element_located(self._igoristan_link)
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
         )
 
         return self

@@ -6,7 +6,7 @@ from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
-from lib.connectors.test_steps.actions.random_error_page import (
+from lib.connectors.test_steps.actions.random_error import (
     open_random_error_page,
     verify_random_error_page,
 )

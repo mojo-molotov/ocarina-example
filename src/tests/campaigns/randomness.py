@@ -7,6 +7,7 @@ from tests.suites.randomness import (
     create_igoristan_randomness_level_1_test_suite,
     create_igoristan_randomness_level_2_test_suite,
     create_igoristan_randomness_level_3_test_suite,
+    create_igoristan_randomness_level_4_test_suite,
 )
 
 if TYPE_CHECKING:
@@ -23,5 +24,6 @@ def create_igoristan_randomness_campaign(
             create_igoristan_randomness_level_1_test_suite(drivers_pool=drivers_pool),
             create_igoristan_randomness_level_2_test_suite(drivers_pool=drivers_pool),
             create_igoristan_randomness_level_3_test_suite(drivers_pool=drivers_pool),
+            create_igoristan_randomness_level_4_test_suite(drivers_pool=drivers_pool),
         ],
     )

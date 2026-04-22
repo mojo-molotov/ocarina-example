@@ -22,6 +22,10 @@ class CorsPage(SeleniumTitleMixin, POMBase):
     def __init__(self, *, driver: WebDriver) -> None:
         """Initialize POM."""
         self._driver = driver
+        self._use_api_anyway_btn = (
+            By.CSS_SELECTOR,
+            'a[href="/igoristan/corsicamon"]',
+        )
 
     def verify(self, *, timeout: float | None = None) -> CorsPage:
         """Verify function."""
@@ -41,4 +45,12 @@ class CorsPage(SeleniumTitleMixin, POMBase):
         except Exception as exc:
             raise PageVerificationError from exc
 
+        return self
+
+    def click_use_api_anyway_btn(self) -> CorsPage:
+        """Click on use API anyway btn."""
+        timeout = get_timeout()
+        WebDriverWait(self._driver, timeout).until(
+            ec.visibility_of_element_located(self._use_api_anyway_btn)
+        ).click()
         return self

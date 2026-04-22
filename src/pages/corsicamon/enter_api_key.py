@@ -38,7 +38,7 @@ class CorsicamonEnterApiKeyPage(SeleniumTitleMixin, POMBase):
         self._driver = driver
 
         self._api_key_input = (By.ID, "enter-api-key")
-        self._igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
+        self._back_to_igoristan_link = (By.CSS_SELECTOR, 'a[href="/igoristan/"]')
         self._access_corsicadex_btn = (
             By.CSS_SELECTOR,
             '[data-testid="access-corsicadex-btn"]',
@@ -92,7 +92,7 @@ class CorsicamonEnterApiKeyPage(SeleniumTitleMixin, POMBase):
                 driver=self._driver,
                 selectors={
                     "API key input": self._api_key_input,
-                    "Back to Igoristan link": self._igoristan_link,
+                    "Back to Igoristan link": self._back_to_igoristan_link,
                     "Access Corsicadex button": self._access_corsicadex_btn,
                 },
                 page_title="Corsicamon enter API key page",
@@ -118,20 +118,18 @@ class CorsicamonEnterApiKeyPage(SeleniumTitleMixin, POMBase):
         WebDriverWait(self._driver, timeout).until(
             ec.visibility_of_element_located(self._corsicamon_network_error_retry_btn)
         ).click()
-
         return self
 
     def click_back_to_igoristan_link(self) -> CorsicamonEnterApiKeyPage:
         """Click on the back to Igoristan link."""
         timeout = get_timeout()
         WebDriverWait(self._driver, timeout).until(
-            ec.visibility_of_element_located(self._igoristan_link)
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
         ).click()
 
         WebDriverWait(self._driver, timeout).until(
-            ec.invisibility_of_element_located(self._igoristan_link)
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
         )
-
         return self
 
     def fail_to_enter_api_key(self) -> CorsicamonEnterApiKeyPage:

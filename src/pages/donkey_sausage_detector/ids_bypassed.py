@@ -47,3 +47,16 @@ class IDSBypassedPage(SeleniumTitleMixin, POMBase):
             raise PageVerificationError from exc
 
         return self
+
+    def click_back_to_igoristan_link(self) -> IDSBypassedPage:
+        """Click on the back to Igoristan link."""
+        timeout = get_timeout()
+        WebDriverWait(self._driver, timeout).until(
+            ec.visibility_of_element_located(self._back_to_igoristan_link)
+        ).click()
+
+        WebDriverWait(self._driver, timeout).until(
+            ec.invisibility_of_element_located(self._back_to_igoristan_link)
+        )
+
+        return self
