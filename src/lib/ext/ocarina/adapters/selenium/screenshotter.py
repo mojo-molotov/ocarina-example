@@ -27,8 +27,3 @@ def take_screenshot(*, driver: WebDriver, logger: ILogger, category: _Category) 
     }
 
     take_screenshot_dispatchers[category]()
-
-
-def take_screenshot_unstrict(driver: WebDriver, logger: ILogger, prefix: str) -> None:
-    """Take a screenshot (free prefix)."""
-    create_selenium_screenshotter(driver, logger).take_screenshot(prefix=prefix)

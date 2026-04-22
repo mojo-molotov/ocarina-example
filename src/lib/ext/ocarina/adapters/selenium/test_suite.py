@@ -3,12 +3,12 @@
 from typing import TYPE_CHECKING, final
 
 from ocarina.dsl.testing.oc_test_suite import TestSuite as OriginalTestSuite
+from ocarina.infra.selenium.create_screenshotter import create_selenium_screenshotter
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from constants.sys.transient_errors import transient_errors
 from lib.ext.ocarina.adapters.selenium.cli_getters import get_logger_mode
-from lib.ext.ocarina.adapters.selenium.screenshotter import take_screenshot_unstrict
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -17,6 +17,12 @@ if TYPE_CHECKING:
     from ocarina.custom_types.thunk import Thunk
     from ocarina.dsl.testing.oc_test import Test
     from ocarina.ports.ilogger import ILogger
+
+
+def _take_screenshot_on_fail(driver: WebDriver, logger: ILogger, prefix: str) -> None:
+    create_selenium_screenshotter(driver, logger).take_screenshot(
+        prefix=prefix, burst_delay=0.350, shots=4
+    )
 
 
 @final
@@ -52,7 +58,7 @@ class TestSuite(OriginalTestSuite[WebDriver]):
             copy_indicator=copy_indicator,
             put_space_after_copy_indicator=put_space_after_copy_indicator,
             autoscreen_on_fail=autoscreen_on_fail,
-            take_screenshot=take_screenshot_unstrict,
+            take_screenshot=_take_screenshot_on_fail,
             transient_errors=transient_errors,
             saturate_workers=saturate_workers,
         )
