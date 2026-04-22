@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, final
 from ocarina.custom_errors.test_framework.pages import PageVerificationError
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
@@ -67,7 +68,7 @@ class DashboardWelcomePage(SeleniumTitleMixin, POMBase):
                     "Dashboard",
                 )
             )
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self
@@ -85,7 +86,7 @@ class DashboardWelcomePage(SeleniumTitleMixin, POMBase):
                 timeout=timeout,
             )
 
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self

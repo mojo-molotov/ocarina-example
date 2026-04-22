@@ -8,6 +8,7 @@ from ocarina.dsl.invariants.assertions import is_positive
 from ocarina.dsl.invariants.validate import validate
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.select import Select
@@ -63,7 +64,7 @@ class ChaoticFormPage(SeleniumTitleMixin, POMBase):
                     "Sacred Corsican Registration",
                 )
             )
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self

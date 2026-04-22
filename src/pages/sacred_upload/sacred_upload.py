@@ -9,6 +9,7 @@ from ocarina.dsl.invariants.assertions import is_not_zero, is_positive
 from ocarina.dsl.invariants.validate import validate
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
@@ -107,7 +108,7 @@ class SacredUploadPage(SeleniumTitleMixin, POMBase):
             WebDriverWait(self._driver, timeout).until(
                 ec.title_contains("Blessed file upload simulator")
             )
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self

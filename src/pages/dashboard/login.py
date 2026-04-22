@@ -20,6 +20,7 @@ from ocarina.dsl.invariants.internals.validation_chain import chain_validations
 from ocarina.dsl.invariants.validate import validate
 from ocarina.infra.selenium.mixins import SeleniumTitleMixin
 from ocarina.pom.base import POMBase
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as ec
@@ -206,7 +207,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
                     "Authentication Required",
                 )
             )
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self
@@ -426,7 +427,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
                 timeout=timeout,
             )
 
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
 
         return self
@@ -444,7 +445,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
                 page_title="the Igoristan dashboard login page (OTP screen)",
                 timeout=timeout,
             )
-        except Exception as exc:
+        except TimeoutException as exc:
             raise PageVerificationError from exc
         else:
             return self
