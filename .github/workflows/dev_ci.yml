@@ -57,5 +57,5 @@ jobs:
       - name: Check coding style
         run: |
           source $VENV_ACTIVATE
-          pip install --index-url https://test.pypi.org/simple/ ocarina==0.2.23
+          pip install --index-url https://test.pypi.org/simple/ ocarina==0.2.24
           make check-coding-style
