@@ -11,7 +11,7 @@ from tests.scenarios.randomness.level_1.random_loaders_page import (
 )
 from tests.scenarios.randomness.level_2.dsed import test_dsed_page_render
 from tests.scenarios.randomness.level_2.madness import test_madness_page_render
-from tests.scenarios.randomness.level_3.chaotic_form.send_it import (
+from tests.scenarios.randomness.level_3.chaotic_form import (
     test_send_chaotic_form,
 )
 
