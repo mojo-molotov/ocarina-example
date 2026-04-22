@@ -1,8 +1,10 @@
 """Napoleon approves."""
 
+import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from ocarina.dsl.testing.oc_test_cycle import has_test_cycle_failed
 from ocarina.infra.selenium.create_drivers_pool import create_selenium_drivers_pool
 from ocarina.opinionated.cli.selenium.cli_store_singleton import (
     SeleniumCliStoreSingleton as CliStoreSingleton,
@@ -54,6 +56,8 @@ if __name__ == "__main__":
     def _post_exec(results: TestCycleResults) -> None:
         print()  # noqa: T201
         pretty_print_results(results, with_colors=True)
+        if has_test_cycle_failed(results):
+            sys.exit(1)
 
     with timing(prefix="Tests duration:"):
         bootstrap(

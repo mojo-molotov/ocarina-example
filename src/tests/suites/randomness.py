@@ -9,6 +9,7 @@ from tests.scenarios.randomness.level_1.random_error_page import (
 from tests.scenarios.randomness.level_1.random_loaders_page import (
     test_random_loaders_page_full_load_and_back_to_homepage,
 )
+from tests.scenarios.randomness.level_2.dsed import test_dsed_page_render
 from tests.scenarios.randomness.level_2.madness import test_madness_page_render
 from tests.scenarios.randomness.level_3.chaotic_form.send_it import (
     test_send_chaotic_form,
@@ -42,6 +43,7 @@ def create_igoristan_randomness_level_2_test_suite(
         name="Level 2",
         tests=[
             test_madness_page_render,
+            test_dsed_page_render,
         ],
         drivers_pool=drivers_pool,
     )

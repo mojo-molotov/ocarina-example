@@ -1,4 +1,4 @@
-"""Test that random error page can be loaded (flaky)."""
+"""Test that random madness page can be loaded (NOT flaky)."""
 
 from typing import TYPE_CHECKING
 
