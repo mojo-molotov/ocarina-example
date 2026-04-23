@@ -31,4 +31,5 @@ def create_e2e_test_cycle(drivers_pool: SeleniumWebDriversPool):
             create_igoristan_global_smoke_campaign(drivers_pool=drivers_pool),
             create_igoristan_corsicamon_smoke_campaign(drivers_pool=drivers_pool),
         ],
+        mode="wait-for-all-smoke-tests",
     )

@@ -1,6 +1,5 @@
 """Igoristan's dashboard login page."""
 
-import math
 import random
 import time
 from contextlib import suppress
@@ -51,7 +50,7 @@ _PAGE_TITLE = "the Igoristan dashboard login page"
 
 def _get_lock() -> RedisLock:
     client = get_redis_client()
-    redis_lock: RedisLock = client.lock(OTP_SEND_LOCK_KEY, timeout=30)
+    redis_lock: RedisLock = client.lock(OTP_SEND_LOCK_KEY, timeout=60)
     return redis_lock
 
 
@@ -355,7 +354,7 @@ class DashboardLoginPage(SeleniumTitleMixin, POMBase):
 
         if workers > 1:
             with _get_lock():
-                time.sleep(math.ceil(max(workers / 2, 2.5)))
+                time.sleep(2.5)
                 _send(username)
         else:
             _send(username)

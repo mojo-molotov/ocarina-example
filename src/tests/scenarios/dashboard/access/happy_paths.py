@@ -6,7 +6,7 @@ from ocarina.custom_types.scenario import Scenario
 from ocarina.dsl.testing.selenium.create_test import create_selenium_test
 from ocarina.opinionated.dsl.drive_page import drive_page
 
-from caches.l1 import in_memory_cache_with_300s_ttl
+from caches.l1 import in_memory_cache_with_30m_ttl
 from caches.reserve_free_cache_key import reserve_free_cache_key
 from lib.connectors.test_steps.actions.dashboard_login import (
     login_without_otp_and_with_retries,
@@ -129,7 +129,7 @@ def dashboard_login_with_otp_happy_path(driver: WebDriver, logger: ILogger):
 
     retries_amount = max(get_max_workers(), 10)
 
-    cache = in_memory_cache_with_300s_ttl
+    cache = in_memory_cache_with_30m_ttl
     fresh_cache_key_for_username = reserve_free_cache_key(cache)
     fresh_cache_key_for_otp_send_button_click_date = reserve_free_cache_key(cache)
 
