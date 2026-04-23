@@ -118,7 +118,7 @@ def _create_login_scenario(credentials: ImmutableCredentials) -> SeleniumTestSce
 
 multi_login_tests = [
     create_selenium_test(
-        name=f"Login — {creds['login']}",
+        name=f"Login - {creds['login']}",
         test_scenario=_create_login_scenario(creds),
     )
     for creds in multi_login_dataset
