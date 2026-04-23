@@ -58,7 +58,7 @@ jobs:
           chmod +x geckodriver
 
       - name: Setup Firefox
-        uses: browser-actions/setup-firefox@v1
+        uses: browser-actions/setup-firefox@fcf821c621167805dd63a29662bd7cb5676c81a8
 
       - name: Install dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
