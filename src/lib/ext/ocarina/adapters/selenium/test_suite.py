@@ -4,6 +4,9 @@ from typing import TYPE_CHECKING, final
 
 from ocarina.dsl.testing.oc_test_suite import TestSuite as OriginalTestSuite
 from ocarina.infra.selenium.create_screenshotter import create_selenium_screenshotter
+from ocarina.opinionated.cli.selenium.cli_store_singleton import (
+    SeleniumCliStoreSingleton,
+)
 from ocarina.opinionated.loggers.create_matching_logger import create_matching_logger
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -52,6 +55,8 @@ class TestSuite(OriginalTestSuite[WebDriver]):
         super().__init__(
             name=name,
             tests=tests,
+            only_ids=SeleniumCliStoreSingleton().get("only"),
+            exclude_ids=SeleniumCliStoreSingleton().get("exclude"),
             max_retries_per_test=8,
             create_logger=create_logger,
             drivers_pool=drivers_pool,
