@@ -69,13 +69,17 @@ if __name__ == "__main__":
             run_plugins=lambda results: run_plugins(
                 lambda: generate_docx_proof(
                     logs_root=get_default_log_dir(),
-                    logger=logger,
+                    logger=create_matching_logger("terminal").set_domain_taxonomy(
+                        ("Generate DOCX proofs plugin",)
+                    ),
                     output_root=Path.cwd() / ".reports" / "tests_docx_output",
                 ),
                 lambda: generate_json_results(
                     results=results,
                     output_dir=Path.cwd() / ".reports" / "tests_json_output",
-                    logger=logger,
+                    logger=create_matching_logger("terminal").set_domain_taxonomy(
+                        ("Generate JSON report file plugin",)
+                    ),
                 ),
                 exceptions_logger=PrintLogger()
                 .set_prefix(
