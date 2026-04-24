@@ -1,6 +1,6 @@
 MAKEFLAGS += --silent
 
-PY_CMD ?= python
+PY_CMD ?= python3
 VENV_BIN ?= .venv/bin
 VENV_PYTHON ?= $(VENV_BIN)/python
 VENV_PIP ?= $(VENV_BIN)/pip
