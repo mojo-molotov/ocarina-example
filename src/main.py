@@ -34,7 +34,7 @@ from ocarina.opinionated.plugins.reports.results_to_json import generate_json_re
 from ocarina.opinionated.plugins.reports.timing import timing
 
 from lib.ext.redis.client import warmup_redis_client
-from tests.cycles.e2e import create_e2e_test_cycle
+from tests.cycles.e2e import E2E_CYCLE_NAME, create_e2e_test_cycle
 
 if TYPE_CHECKING:
     from ocarina.custom_types.oc_test_layers import TestCycleResults
@@ -68,7 +68,7 @@ if __name__ == "__main__":
             test_cycle=create_e2e_test_cycle(drivers_pool),
             run_plugins=lambda results: run_plugins(
                 lambda: generate_docx_proof(
-                    logs_root=get_default_log_dir(),
+                    logs_root=get_default_log_dir() / E2E_CYCLE_NAME,
                     logger=create_matching_logger("terminal").set_domain_taxonomy(
                         ("Generate DOCX proofs plugin",)
                     ),

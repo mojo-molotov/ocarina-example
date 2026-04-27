@@ -16,11 +16,13 @@ from tests.campaigns.sacred_upload import create_igoristan_sacred_upload_campaig
 if TYPE_CHECKING:
     from ocarina.custom_types.selenium.web_drivers_pool import SeleniumWebDriversPool
 
+E2E_CYCLE_NAME = "e2e"
+
 
 def create_e2e_test_cycle(drivers_pool: SeleniumWebDriversPool):
     """e2e test cycle."""
     return TestCycle(
-        name="e2e",
+        name=E2E_CYCLE_NAME,
         campaigns=[
             create_igoristan_login_campaign(drivers_pool=drivers_pool),
             create_igoristan_randomness_campaign(drivers_pool=drivers_pool),
