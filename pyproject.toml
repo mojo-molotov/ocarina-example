@@ -4,7 +4,7 @@ version = "0.0.0"
 description = "Toy project using Ocarina"
 requires-python = ">=3.14"
 dependencies = [
-    "ocarina>=1.0.0",
+    "ocarina>=1.0.3",
     "python-docx>=1.2.0",
     "selenium>=4.40.0",
     "python-dotenv>=1.2.2",
