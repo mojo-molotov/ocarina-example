@@ -35,6 +35,7 @@ from lib.ext.ocarina.adapters.selenium.cli_getters import (
     get_driver_path,
     get_headless,
     get_max_workers,
+    get_profile_path,
     get_timeout,
 )
 from lib.ext.redis.client import warmup_redis_client
@@ -52,6 +53,7 @@ if __name__ == "__main__":
         headless=get_headless(),
         wait_timeout=get_timeout(),
         max_size=get_max_workers(),
+        profile_path=get_profile_path(),
     )
 
     logger = create_matching_logger(CliStoreSingleton().get("logger"))

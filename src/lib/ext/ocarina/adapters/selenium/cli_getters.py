@@ -61,3 +61,9 @@ def get_headless() -> bool:
     """Get headless flag from CLI."""
     headless: bool = SeleniumCliStoreSingleton().get("headless")
     return headless
+
+
+def get_profile_path() -> str | None:
+    """Get browser profile path from CLI (None when --profile-path is omitted)."""
+    profile_path: str | None = SeleniumCliStoreSingleton().get("profile_path")
+    return profile_path
