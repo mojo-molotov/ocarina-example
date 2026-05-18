@@ -33,13 +33,9 @@ make create-venv
 source .venv/bin/activate            # Windows: .venv\Scripts\activate
 make install
 
-pip install --index-url https://test.pypi.org/simple/ ocarina
-
 cp .env.example .env
 # then edit .env with your values
 ```
-
-The `ocarina` package is published on TestPyPI (not PyPI) during active development, so it must be installed separately after `make install`.
 
 ## Environment variables
 
